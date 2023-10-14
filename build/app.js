@@ -13,7 +13,7 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 //routes
 app.get('/', (req, res) => {
-    res.send({ "message": 'This is test route' });
+    res.send({ "message": 'This route work successfully' });
 });
 //global error handler
 //page not found router

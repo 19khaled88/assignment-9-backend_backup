@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }))
 
 
 app.get('/', (req, res) => {
-  res.send({ "message": 'This is test route' })
+  res.send({ "message": 'This route work successfully' })
 })
 
 //global error handler
