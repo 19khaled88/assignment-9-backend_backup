@@ -1,12 +1,12 @@
-// import { Request, Response } from "express";
-// import { UserService } from "./service";
+import { Request, Response } from "express";
+import { UserService } from "./service";
 
 
-// const signUpController = async (req: Request, res: Response) => {
-//     const result = await UserService.signUpService(req.body)
-//     res.send({ result })
-// }
+const signUpController = async (req: Request, res: Response) => {
+    const result = await UserService.signUpService(req.body)
+    res.send({ result })
+}
 
-// export const UserController = {
-//     signUpController
-// }
+export const UserController = {
+    signUpController
+}

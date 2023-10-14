@@ -1,10 +1,10 @@
 import cors from 'cors'
 import express, { Application, NextFunction, Request, Response } from 'express'
 import httpStatus from 'http-status'
-// import userRoutes from './app/routes/index'
-import { PrismaClient } from '@prisma/client'
+import userRoutes from './app/routes/index'
+
 const app: Application = express()
-const prisma = new PrismaClient()
+
 
 
 //middlwares
@@ -14,12 +14,7 @@ app.use(express.urlencoded({ extended: true }))
 
 
 //routes
-app.use('/api/v1', async (req: Request, res: Response) => {
-  const result = await prisma.user.create({
-    data: req.body
-  })
-  res.send(result)
-})
+app.use('/api/v1', userRoutes)
 
 app.get('/', (req: Request, res: Response) => {
   res.send({ "message": 'This route work successfully' })
