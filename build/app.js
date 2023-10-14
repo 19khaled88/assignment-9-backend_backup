@@ -15,7 +15,7 @@ app.use(express_1.default.urlencoded({ extended: true }));
 //routes
 app.use('/api/v1', index_1.default);
 app.get('/', (req, res) => {
-    res.send({ "message": 'This route work successfully' });
+    res.send({ "User Routes": 'This route work successfully' });
 });
 //global error handler
 //page not found router

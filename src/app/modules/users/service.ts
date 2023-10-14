@@ -1,7 +1,8 @@
 import { PrismaClient, User } from "@prisma/client";
 import bcrypt from 'bcrypt';
-import { signJwt } from "../../../utils/token";
+
 import { IAllUserResponse, IUserResponse, Token } from "./interfaces";
+import { signJwt } from "../../../utils/token";
 const prisma = new PrismaClient()
 
 

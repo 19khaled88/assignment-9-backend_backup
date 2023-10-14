@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use('/api/v1', userRoutes)
 
 app.get('/', (req: Request, res: Response) => {
-  res.send({ "message": 'This route work successfully' })
+  res.send({ "User Routes": 'This route work successfully' })
 })
 
 //global error handler
