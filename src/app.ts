@@ -1,7 +1,9 @@
 import cors from 'cors'
 import express, { Application, NextFunction, Request, Response } from 'express'
 import httpStatus from 'http-status'
+import userRoutes from './app/routes/index'
 const app: Application = express()
+
 
 
 //middlwares
@@ -11,7 +13,7 @@ app.use(express.urlencoded({ extended: true }))
 
 
 //routes
-
+app.use('/api/v1',userRoutes)
 
 app.get('/', (req, res) => {
   res.send({ "message": 'This route work successfully' })
