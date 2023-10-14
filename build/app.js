@@ -16,19 +16,14 @@ const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
 const http_status_1 = __importDefault(require("http-status"));
 // import userRoutes from './app/routes/index'
-const client_1 = require("@prisma/client");
 const app = (0, express_1.default)();
-const prisma = new client_1.PrismaClient();
 //middlwares
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 //routes
 app.use('/api/v1', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield prisma.user.create({
-        data: req.body
-    });
-    res.send(result);
+    res.send({ "message": 'This route work successfully' });
 }));
 app.get('/', (req, res) => {
     res.send({ "message": 'This route work successfully' });
