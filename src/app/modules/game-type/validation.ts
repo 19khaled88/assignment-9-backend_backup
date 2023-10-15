@@ -7,9 +7,6 @@ const create = z.object({
     }),
     numberOfPalyers: z.string({
       required_error: 'Number of players is required or field not match'
-    }),
-    price: z.string({
-      required_error: 'Price is required or field not match'
     })
   })
 });

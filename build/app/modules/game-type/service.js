@@ -35,7 +35,6 @@ const createGameTypeService = (data) => __awaiter(void 0, void 0, void 0, functi
             },
             select: {
                 name: true,
-                price: true,
                 numberOfPalyers: true
             }
         });
@@ -49,7 +48,6 @@ const getAllGameType = () => __awaiter(void 0, void 0, void 0, function* () {
             id: true,
             name: true,
             numberOfPalyers: true,
-            price: true,
             GameOffers: true
         },
     });
@@ -64,7 +62,6 @@ const getSingleGameType = (id) => __awaiter(void 0, void 0, void 0, function* ()
             id: true,
             name: true,
             numberOfPalyers: true,
-            price: true,
             GameOffers: true
         }
     });

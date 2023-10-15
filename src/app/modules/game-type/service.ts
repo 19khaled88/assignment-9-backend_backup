@@ -24,7 +24,6 @@ const createGameTypeService = async (data: GameType): Promise<IGameTypeResponse 
 			},
 			select: {
 				name: true,
-				price: true,
 				numberOfPalyers: true
 			}
 		})
@@ -39,7 +38,7 @@ const getAllGameType = async (): Promise<IGameTypeResponse[]> => {
 			id: true,
 			name: true,
 			numberOfPalyers: true,
-			price: true,
+		
 			GameOffers:true
 		},
 
@@ -57,7 +56,7 @@ const getSingleGameType = async (id: string): Promise<IGameTypeResponse | null> 
 			id: true,
 			name: true,
 			numberOfPalyers: true,
-			price: true,
+			
 			GameOffers:true
 		}
 	});

@@ -8,7 +8,6 @@ type gameOffer = {
 export type IGameTypeResponse = {
 	name: string,
 	numberOfPalyers: number,
-	price: number,
 	GameOffers?:gameOffer[]
 }
 

@@ -41,11 +41,11 @@ model Turf {
 }
 
 model GameType {
-  id              String      @id @default(uuid())
+  id              String @id @default(uuid())
   name            String
   numberOfPalyers Int
-  price           Float
-  GameOffers      GameOffer[]
+
+  GameOffers GameOffer[]
 
   createAt  DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -66,8 +66,9 @@ model Field {
 }
 
 model GameOffer {
-  id   String   @id @default(uuid())
-  time DateTime
+  id          String   @id @default(uuid())
+  offer_time  DateTime
+  offer_price Float
 
   turfId String
   turf   Turf   @relation(fields: [turfId], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -86,9 +87,10 @@ model GameOffer {
 }
 
 model Booking {
-  id          String    @id @default(uuid())
-  gameOfferId String
-  gameOffer   GameOffer @relation(fields: [gameOfferId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id           String    @id @default(uuid())
+  booking_time DateTime
+  gameOfferId  String
+  gameOffer    GameOffer @relation(fields: [gameOfferId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
