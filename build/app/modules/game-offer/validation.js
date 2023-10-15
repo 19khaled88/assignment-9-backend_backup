@@ -4,11 +4,8 @@ exports.GameOfferValidation = void 0;
 const zod_1 = require("zod");
 const create = zod_1.z.object({
     body: zod_1.z.object({
-        offer_time: zod_1.z.string({
+        price_per_hour: zod_1.z.number({
             required_error: 'Time is required or field not match'
-        }),
-        offer_price: zod_1.z.string({
-            required_error: 'Offer price is required or field not match'
         }),
         gameTypeId: zod_1.z.string({
             required_error: 'Game type is required or field not match'

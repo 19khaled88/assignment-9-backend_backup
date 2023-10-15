@@ -30,8 +30,7 @@ const createGameOfferService = (data) => __awaiter(void 0, void 0, void 0, funct
                 id: result.id
             },
             select: {
-                offer_time: true,
-                offer_price: true,
+                price_per_hour: true,
                 turfId: true,
                 gameTypeId: true,
                 fieldId: true
@@ -45,8 +44,7 @@ const getAllGameOffers = () => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield prisma.gameOffer.findMany({
         select: {
             id: true,
-            offer_time: true,
-            offer_price: true,
+            price_per_hour: true,
             turfId: true,
             gameTypeId: true,
             fieldId: true,
@@ -61,8 +59,7 @@ const getSingleGameOffer = (id) => __awaiter(void 0, void 0, void 0, function* (
         },
         select: {
             id: true,
-            offer_time: true,
-            offer_price: true,
+            price_per_hour: true,
             turfId: true,
             gameTypeId: true,
             fieldId: true,

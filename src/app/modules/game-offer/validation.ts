@@ -1,11 +1,8 @@
 import { z } from 'zod';
 const create = z.object({
   body: z.object({
-    offer_time: z.string({
+    price_per_hour: z.number({
       required_error: 'Time is required or field not match'
-    }),
-    offer_price: z.string({
-      required_error: 'Offer price is required or field not match'
     }),
     gameTypeId: z.string({
       required_error: 'Game type is required or field not match'

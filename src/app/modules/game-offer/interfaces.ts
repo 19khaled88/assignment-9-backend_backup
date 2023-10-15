@@ -1,6 +1,5 @@
 export type IGameOfferesponse = {
-	offer_time: Date,
-	offer_price:number,
+	price_per_hour:number,
 	turfId: string,
 	gameTypeId:string,
 	fieldId:string,

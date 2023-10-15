@@ -1,5 +1,4 @@
 import { GameOffer, PrismaClient } from "@prisma/client";
-import ApiError from "../../../errors/apiError";
 import { IGameOfferesponse } from "./interfaces";
 const prisma = new PrismaClient()
 
@@ -23,8 +22,7 @@ const createGameOfferService = async (data: GameOffer): Promise<IGameOfferespons
 				id: result.id
 			},
 			select: {
-				offer_time: true,
-				offer_price: true,
+				price_per_hour: true,
 				turfId: true,
 				gameTypeId: true,
 				fieldId: true
@@ -39,8 +37,8 @@ const getAllGameOffers = async (): Promise<IGameOfferesponse[]> => {
 	const result = await prisma.gameOffer.findMany({
 		select: {
 			id: true,
-			offer_time: true,
-			offer_price: true,
+			
+			price_per_hour: true,
 			turfId: true,
 			gameTypeId: true,
 			fieldId: true,
@@ -56,8 +54,7 @@ const getSingleGameOffer = async (id: string): Promise<IGameOfferesponse | null>
 		},
 		select: {
 			id: true,
-			offer_time: true,
-			offer_price: true,
+			price_per_hour: true,
 			turfId: true,
 			gameTypeId: true,
 			fieldId: true,

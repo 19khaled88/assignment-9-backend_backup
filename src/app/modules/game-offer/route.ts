@@ -10,6 +10,6 @@ router.delete('/delete/:id', GameOfferController.deleteGameOfferController)
 router.put('/update/:id', GameOfferController.updateGameOfferController)
 router.get('/single/:id', GameOfferController.getSingleGameOfferController)
 router.post('/create', validateRequest(GameOfferValidation.create), GameOfferController.createController)
-router.get('/allFields', GameOfferController.getAllGameOfferController)
+router.get('/allOfferdGames', GameOfferController.getAllGameOfferController)
 
 export const GameOfferRouter = router

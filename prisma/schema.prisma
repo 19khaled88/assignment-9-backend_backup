@@ -69,9 +69,8 @@ model Field {
 }
 
 model GameOffer {
-  id          String   @id @default(uuid())
-  offer_time  DateTime
-  offer_price Float
+  id          String @id @default(uuid())
+  price_per_hour Float
 
   turfId String
   turf   Turf   @relation(fields: [turfId], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -90,10 +89,12 @@ model GameOffer {
 }
 
 model Booking {
-  id           String    @id @default(uuid())
-  booking_time DateTime
-  gameOfferId  String
-  gameOffer    GameOffer @relation(fields: [gameOfferId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id           String @id @default(uuid())
+  start_time  String
+  end_time    String
+
+  gameOfferId String
+  gameOffer   GameOffer @relation(fields: [gameOfferId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)

@@ -13,5 +13,5 @@ router.delete('/delete/:id', controller_1.GameOfferController.deleteGameOfferCon
 router.put('/update/:id', controller_1.GameOfferController.updateGameOfferController);
 router.get('/single/:id', controller_1.GameOfferController.getSingleGameOfferController);
 router.post('/create', (0, validationMiddleware_1.default)(validation_1.GameOfferValidation.create), controller_1.GameOfferController.createController);
-router.get('/allFields', controller_1.GameOfferController.getAllGameOfferController);
+router.get('/allOfferdGames', controller_1.GameOfferController.getAllGameOfferController);
 exports.GameOfferRouter = router;
