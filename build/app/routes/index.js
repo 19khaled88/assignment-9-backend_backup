@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const route_1 = require("../modules/users/route");
 const route_2 = require("../modules/turf/route");
 const route_3 = require("../modules/game-type/route");
+const route_4 = require("../modules/fields/route");
 const userRootRoute = express_1.default.Router();
 const ModuleRoute = [
     {
@@ -16,6 +17,10 @@ const ModuleRoute = [
     {
         path: '/game-type',
         routes: route_3.GameTypeRouter
+    },
+    {
+        path: '/field',
+        routes: route_4.FieldRouter
     },
     {
         path: '/turf',

@@ -36,7 +36,7 @@ model Turf {
   createAt   DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
   gameOffers GameOffer[]
-  fields      Field[]
+  fields     Field[]
 
   @@map("turfs")
 }
@@ -56,7 +56,7 @@ model GameType {
 
 model Field {
   id   String @id @default(uuid())
-  name String
+  code String
   size String
 
   turfId     String

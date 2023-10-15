@@ -3,6 +3,7 @@ import express from 'express'
 import { UserRouter } from '../modules/users/route'
 import { TurfRouter } from '../modules/turf/route'
 import { GameTypeRouter } from '../modules/game-type/route'
+import { FieldRouter } from '../modules/fields/route'
 const userRootRoute = express.Router()
 
 
@@ -15,6 +16,10 @@ const ModuleRoute = [
     {
         path: '/game-type',
         routes: GameTypeRouter
+    },
+    {
+        path: '/field',
+        routes: FieldRouter
     },
     {
         path: '/turf',
