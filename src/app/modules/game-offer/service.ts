@@ -35,7 +35,8 @@ const createGameOfferService = async (data: GameOffer): Promise<IGameOfferespons
 				price_per_hour: true,
 				turfId: true,
 				gameTypeId: true,
-				fieldId: true
+				fieldId: true,
+				bookings:true
 			}
 		})
 		return newGameOffer
@@ -47,11 +48,11 @@ const getAllGameOffers = async (): Promise<IGameOfferesponse[]> => {
 	const result = await prisma.gameOffer.findMany({
 		select: {
 			id: true,
-			
 			price_per_hour: true,
 			turfId: true,
 			gameTypeId: true,
 			fieldId: true,
+			bookings:true
 		},
 	});
 	return result;
@@ -68,6 +69,7 @@ const getSingleGameOffer = async (id: string): Promise<IGameOfferesponse | null>
 			turfId: true,
 			gameTypeId: true,
 			fieldId: true,
+			bookings:true
 		}
 	});
 	return isExist;

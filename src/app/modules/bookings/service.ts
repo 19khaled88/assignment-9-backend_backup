@@ -42,7 +42,7 @@ const getAllBookingService = async (): Promise<IBookingResponse[]> => {
 			end_time: true,
 			gameOfferId: true,
 			userId: true
-		},
+		}
 	});
 	return result;
 };

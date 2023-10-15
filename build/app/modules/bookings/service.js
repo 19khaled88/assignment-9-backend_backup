@@ -48,7 +48,7 @@ const getAllBookingService = () => __awaiter(void 0, void 0, void 0, function* (
             end_time: true,
             gameOfferId: true,
             userId: true
-        },
+        }
     });
     return result;
 });

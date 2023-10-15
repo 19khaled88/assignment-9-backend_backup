@@ -46,7 +46,8 @@ const createGameOfferService = (data) => __awaiter(void 0, void 0, void 0, funct
                 price_per_hour: true,
                 turfId: true,
                 gameTypeId: true,
-                fieldId: true
+                fieldId: true,
+                bookings: true
             }
         });
         return newGameOffer;
@@ -61,6 +62,7 @@ const getAllGameOffers = () => __awaiter(void 0, void 0, void 0, function* () {
             turfId: true,
             gameTypeId: true,
             fieldId: true,
+            bookings: true
         },
     });
     return result;
@@ -76,6 +78,7 @@ const getSingleGameOffer = (id) => __awaiter(void 0, void 0, void 0, function* (
             turfId: true,
             gameTypeId: true,
             fieldId: true,
+            bookings: true
         }
     });
     return isExist;
