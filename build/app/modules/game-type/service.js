@@ -12,74 +12,74 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TurfService = void 0;
+exports.GameTypeService = void 0;
 const client_1 = require("@prisma/client");
 const apiError_1 = __importDefault(require("../../../errors/apiError"));
 const prisma = new client_1.PrismaClient();
-const createTurfService = (data) => __awaiter(void 0, void 0, void 0, function* () {
+const createGameTypeService = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield prisma.$transaction((transactionClient) => __awaiter(void 0, void 0, void 0, function* () {
-        const isExist = yield transactionClient.turf.findFirst({
+        const isExist = yield transactionClient.gameType.findFirst({
             where: {
                 name: data.name
             }
         });
         if (isExist) {
-            throw new apiError_1.default(400, 'A turf with this name already created');
+            throw new apiError_1.default(400, 'A Game type with this name already created');
         }
-        const result = yield transactionClient.turf.create({
+        const result = yield transactionClient.gameType.create({
             data: data,
         });
-        const newUser = yield transactionClient.turf.findFirst({
+        const newGame = yield transactionClient.gameType.findFirst({
             where: {
                 id: result.id
             },
             select: {
                 name: true,
-                owner: true,
-                location: true
+                price: true,
+                numberOfPalyers: true
             }
         });
-        return newUser;
+        return newGame;
     }));
     return result;
 });
-const getAllTurfs = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield prisma.turf.findMany({
+const getAllGameType = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma.gameType.findMany({
         select: {
             id: true,
             name: true,
-            location: true,
-            owner: true,
-            gameOffers: true
+            numberOfPalyers: true,
+            price: true,
+            GameOffers: true
         },
     });
     return result;
 });
-const getSingleTurf = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const isExist = yield prisma.turf.findFirst({
+const getSingleGameType = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const isExist = yield prisma.gameType.findFirst({
         where: {
             id: id,
         },
         select: {
             id: true,
             name: true,
-            location: true,
-            owner: true,
-            gameOffers: true
+            numberOfPalyers: true,
+            price: true,
+            GameOffers: true
         }
     });
     return isExist;
 });
-const deleteTurf = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const isDeleted = yield prisma.turf.delete({
+const deleteGameType = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const isDeleted = yield prisma.gameType.delete({
         where: {
             id: id,
         },
     });
     return isDeleted;
 });
-const updateTurf = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const isUpdated = yield prisma.turf.update({
+const updateGameType = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const isUpdated = yield prisma.gameType.update({
         where: {
             id: id,
         },
@@ -87,10 +87,10 @@ const updateTurf = (id, payload) => __awaiter(void 0, void 0, void 0, function* 
     });
     return isUpdated;
 });
-exports.TurfService = {
-    createTurfService,
-    getAllTurfs,
-    getSingleTurf,
-    deleteTurf,
-    updateTurf
+exports.GameTypeService = {
+    createGameTypeService,
+    getAllGameType,
+    getSingleGameType,
+    deleteGameType,
+    updateGameType
 };
