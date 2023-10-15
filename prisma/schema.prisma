@@ -36,6 +36,7 @@ model Turf {
   createAt   DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
   gameOffers GameOffer[]
+  fields      Field[]
 
   @@map("turfs")
 }
@@ -58,6 +59,8 @@ model Field {
   name String
   size String
 
+  turfId     String
+  turf       Turf        @relation(fields: [turfId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   createAt   DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
   gameOffers GameOffer[]

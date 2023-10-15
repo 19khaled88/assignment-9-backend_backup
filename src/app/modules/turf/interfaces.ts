@@ -3,12 +3,18 @@ type gameOffer = {
 	gameTypeId: string,
 	fieldId:string
 }
+type fields={
+	name:string,
+	size:string,
+	turfId:string
+}
 
 export type ITurfResponse = {
 	name: string,
 	owner: string,
 	location: string,
-	gameOffers?:gameOffer[]
+	gameOffers?:gameOffer[],
+	fields?:fields[]
 }
 
 

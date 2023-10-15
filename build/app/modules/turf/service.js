@@ -50,7 +50,8 @@ const getAllTurfs = () => __awaiter(void 0, void 0, void 0, function* () {
             name: true,
             location: true,
             owner: true,
-            gameOffers: true
+            gameOffers: true,
+            fields: true
         },
     });
     return result;
@@ -65,7 +66,8 @@ const getSingleTurf = (id) => __awaiter(void 0, void 0, void 0, function* () {
             name: true,
             location: true,
             owner: true,
-            gameOffers: true
+            gameOffers: true,
+            fields: true
         }
     });
     return isExist;
