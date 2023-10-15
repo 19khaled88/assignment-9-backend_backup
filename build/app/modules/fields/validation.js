@@ -10,7 +10,7 @@ const create = zod_1.z.object({
         turfId: zod_1.z.string({
             required_error: 'Turf ID is required or field not match'
         }),
-        size: zod_1.z.number({
+        size: zod_1.z.string({
             required_error: 'Field size is required or field not match'
         })
     })
