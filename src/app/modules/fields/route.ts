@@ -10,6 +10,6 @@ router.delete('/delete/:id', FieldController.deleteFieldController)
 router.put('/update/:id', FieldController.updateFieldController)
 router.get('/single/:id', FieldController.getSingleFieldController)
 router.post('/create', validateRequest(FieldValidation.create), FieldController.createController)
-router.get('/allFields', FieldController.getSingleFieldController)
+router.get('/allFields', FieldController.getAllFieldController)
 
 export const FieldRouter = router

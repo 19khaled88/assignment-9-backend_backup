@@ -13,5 +13,5 @@ router.delete('/delete/:id', controller_1.FieldController.deleteFieldController)
 router.put('/update/:id', controller_1.FieldController.updateFieldController);
 router.get('/single/:id', controller_1.FieldController.getSingleFieldController);
 router.post('/create', (0, validationMiddleware_1.default)(validation_1.FieldValidation.create), controller_1.FieldController.createController);
-router.get('/allFields', controller_1.FieldController.getSingleFieldController);
+router.get('/allFields', controller_1.FieldController.getAllFieldController);
 exports.FieldRouter = router;
