@@ -7,7 +7,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL_LOCAL")
+  // url      = env("DATABASE_URL")
 }
 
 model User {
@@ -19,8 +20,83 @@ model User {
   contactNo String
   address   String
   location  String
+  createAt  DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  bookings  Booking[]
 
-  @@map(name: "users")
+  @@map("users")
+}
+
+model Turf {
+  id       String @id @default(uuid())
+  name     String
+  location String
+  owner    String
+
+  createAt   DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  gameOffers GameOffer[]
+
+  @@map("turfs")
+}
+
+model GameType {
+  id              String      @id @default(uuid())
+  name            String
+  numberOfPalyers Int
+  price           Float
+  GameOffers      GameOffer[]
+
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("game-types")
+}
+
+model Field {
+  id   String @id @default(uuid())
+  name String
+  size String
+
+  createAt   DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  gameOffers GameOffer[]
+
+  @@map("fields")
+}
+
+model GameOffer {
+  id   String   @id @default(uuid())
+  time DateTime
+
+  turfId String
+  turf   Turf   @relation(fields: [turfId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  gameTypeId String
+  gameType   GameType @relation(fields: [gameTypeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  fieldId String
+  field   Field  @relation(fields: [fieldId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  createAt  DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  bookings  Booking[]
+
+  @@map("game-offers")
+}
+
+model Booking {
+  id          String    @id @default(uuid())
+  gameOfferId String
+  gameOffer   GameOffer @relation(fields: [gameOfferId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("bookings")
 }
 
 enum RoleEnumType {

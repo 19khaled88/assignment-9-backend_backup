@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import { AnyZodObject, ZodEffects } from 'zod';
-import sendResponse from '../../shared/sendResponse';
-import httpStatus from 'http-status';
-import zodError from '../../errors/zodError';
+import { AnyZodObject, ZodEffects, ZodError } from 'zod';
+// import sendResponse from '../../shared/sendResponse';
+// import httpStatus from 'http-status';
+// import zodError from '../../errors/zodError';
 
 const validateRequest =
   (schema: AnyZodObject | ZodEffects<AnyZodObject>) =>
@@ -18,7 +18,7 @@ const validateRequest =
         return next();
       } catch (err) {
         // zodError(err)
-
+        
         next(err);
       }
     };

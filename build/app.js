@@ -7,6 +7,7 @@ const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
 const http_status_1 = __importDefault(require("http-status"));
 const index_1 = __importDefault(require("./app/routes/index"));
+const globalErrorHandler_1 = __importDefault(require("./app/middleware/globalErrorHandler"));
 const app = (0, express_1.default)();
 //middlwares
 app.use((0, cors_1.default)());
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
     res.send({ "User Routes": 'This route work successfully' });
 });
 //global error handler
+app.use(globalErrorHandler_1.default);
 //page not found router
 app.use((req, res, next) => {
     res.status(http_status_1.default.NOT_FOUND).json({

@@ -3,16 +3,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const validationError_1 = __importDefault(require("../../errors/validationError"));
-const zod_1 = require("zod");
-const zodError_1 = __importDefault(require("../../errors/zodError"));
-const castError_1 = __importDefault(require("../../errors/castError"));
 const client_1 = require("@prisma/client");
-const prismaValidationError_1 = __importDefault(require("../../errors/prismaValidationError"));
-const prismaClientKnownRequestError_1 = __importDefault(require("../../errors/prismaClientKnownRequestError"));
-const apiError_1 = __importDefault(require("../../errors/apiError"));
+const zod_1 = require("zod");
 const config_1 = __importDefault(require("../../config"));
+const apiError_1 = __importDefault(require("../../errors/apiError"));
+const castError_1 = __importDefault(require("../../errors/castError"));
+const prismaClientKnownRequestError_1 = __importDefault(require("../../errors/prismaClientKnownRequestError"));
+const prismaValidationError_1 = __importDefault(require("../../errors/prismaValidationError"));
+const validationError_1 = __importDefault(require("../../errors/validationError"));
+const zodError_1 = __importDefault(require("../../errors/zodError"));
 const globalErrorHandler = (err, req, res, next) => {
+    // console.log('total error : ',err)
     let statusCode = 500;
     let message = 'Something went wrong !';
     let errorMessages = [];
@@ -22,7 +23,9 @@ const globalErrorHandler = (err, req, res, next) => {
         message = simplifiedError.message;
         errorMessages = simplifiedError.errorMessages;
     }
-    else if (err.name instanceof zod_1.ZodError) {
+    else if (err instanceof zod_1.ZodError
+    // err.name === 'ZodError'
+    ) {
         const simplifiedError = (0, zodError_1.default)(err);
         statusCode = simplifiedError.statusCode;
         message = simplifiedError.message;

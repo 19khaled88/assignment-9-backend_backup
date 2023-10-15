@@ -1,8 +1,8 @@
 
 
 import express from 'express'
+import validateRequest from '../../middleware/validationMiddleware'
 import { UserController } from './controller'
-import validateRequest from '../../middleware/userRoleValidation'
 import { UserValidation } from './validation'
 
 const router = express.Router()

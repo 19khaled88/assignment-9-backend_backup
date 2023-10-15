@@ -29,6 +29,7 @@ const signUpServices = (data) => __awaiter(void 0, void 0, void 0, function* () 
                 id: result.id
             },
             select: {
+                id: true,
                 name: true,
                 role: true,
                 email: true,
@@ -67,8 +68,9 @@ const getAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
             email: true,
             contactNo: true,
             address: true,
-            location: true
-        }
+            location: true,
+            bookings: true
+        },
     });
     return result;
 });
@@ -84,7 +86,8 @@ const getSingleUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
             email: true,
             contactNo: true,
             address: true,
-            location: true
+            location: true,
+            bookings: true
         }
     });
     return isExist;

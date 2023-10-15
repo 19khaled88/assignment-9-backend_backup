@@ -1,23 +1,24 @@
+
+
 export type Token = {
 	token: string;
 };
 
-export type IUserResponse = {
-	name: string,
-	email: string,
-	role: string,
-	contactNo: string,
-	address: string,
-	location: string
+type bookings = {
+	gameOfferId: string,
+	userId: string
 }
-export type IAllUserResponse = {
-	id:string,
+
+
+export type IUserResponse = {
+	id: string,
 	name: string,
 	email: string,
 	role: string,
 	contactNo: string,
 	address: string,
-	location: string
+	location: string,
+	bookings?: bookings[]
 }
 
 

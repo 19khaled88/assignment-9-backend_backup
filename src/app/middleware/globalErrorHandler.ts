@@ -1,17 +1,18 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
 
-import handleValidationError from "../../errors/validationError";
-import { ZodError } from "zod";
-import zodError from "../../errors/zodError";
-import handleCastError from "../../errors/castError";
 import { Prisma } from "@prisma/client";
-import handlePrismaValidationError from "../../errors/prismaValidationError";
-import handlePrismaClientKnowRequestError from "../../errors/prismaClientKnownRequestError";
-import ApiError from "../../errors/apiError";
+import { z,ZodError } from "zod";
 import config from "../../config";
+import ApiError from "../../errors/apiError";
+import handleCastError from "../../errors/castError";
+import handlePrismaClientKnowRequestError from "../../errors/prismaClientKnownRequestError";
+import handlePrismaValidationError from "../../errors/prismaValidationError";
+import handleValidationError from "../../errors/validationError";
+import zodError from "../../errors/zodError";
 import { IGenericErrorMessage } from "../../interfaces.ts/genericErrorMessage";
 
 const globalErrorHandler: ErrorRequestHandler = (err, req: Request, res: Response, next: NextFunction) => {
+    // console.log('total error : ',err)
 
     let statusCode = 500;
     let message = 'Something went wrong !';
@@ -22,7 +23,10 @@ const globalErrorHandler: ErrorRequestHandler = (err, req: Request, res: Respons
         statusCode = simplifiedError.statusCode
         message = simplifiedError.message
         errorMessages = simplifiedError.errorMessages
-    } else if (err.name instanceof ZodError) {
+    } else if ( 
+        err instanceof ZodError
+        // err.name === 'ZodError'
+        ) {
         const simplifiedError = zodError(err)
         statusCode = simplifiedError.statusCode
         message = simplifiedError.message

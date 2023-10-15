@@ -63,7 +63,7 @@ const getSingleUserController = async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "User getched successfully",
+    message: "User fetched successfully",
     data: result,
   });
 };
@@ -83,7 +83,7 @@ const deleteUserControler = async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Uers deleted successfully",
+    message: "User deleted successfully",
     data: isDeleted,
   });
 };

@@ -73,7 +73,7 @@ const getSingleUserController = (req, res) => __awaiter(void 0, void 0, void 0, 
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "User getched successfully",
+        message: "User fetched successfully",
         data: result,
     });
 });
@@ -91,7 +91,7 @@ const deleteUserControler = (req, res) => __awaiter(void 0, void 0, void 0, func
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Uers deleted successfully",
+        message: "User deleted successfully",
         data: isDeleted,
     });
 });

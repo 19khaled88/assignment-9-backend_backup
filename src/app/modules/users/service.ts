@@ -1,8 +1,8 @@
 import { PrismaClient, User } from "@prisma/client";
 import bcrypt from 'bcrypt';
 
-import { IAllUserResponse, IUserResponse, Token } from "./interfaces";
 import { signJwt } from "../../../utils/token";
+import {  IUserResponse, Token } from "./interfaces";
 const prisma = new PrismaClient()
 
 
@@ -19,6 +19,7 @@ const signUpServices = async (data: User): Promise<IUserResponse | null> => {
 				id: result.id
 			},
 			select: {
+				id:true,
 				name: true,
 				role: true,
 				email: true,
@@ -57,7 +58,7 @@ const signInServices = async (data: Partial<User>): Promise<Token | null> => {
 	throw new Error('This user not found')
 };
 
-const getAllUsers = async (): Promise<IAllUserResponse[]> => {
+const getAllUsers = async (): Promise<IUserResponse[]> => {
 	const result = await prisma.user.findMany({
 		select: {
 			id:true,
@@ -66,13 +67,16 @@ const getAllUsers = async (): Promise<IAllUserResponse[]> => {
 			email: true,
 			contactNo: true,
 			address: true,
-			location: true
-		}
+			location: true,
+			bookings:true
+		},
+		
 	});
+	
 	return result;
 };
 
-const getSingleUser = async (id: string): Promise<IAllUserResponse | null> => {
+const getSingleUser = async (id: string): Promise<IUserResponse | null> => {
 	const isExist = await prisma.user.findFirst({
 		where: {
 			id: id,
@@ -84,7 +88,8 @@ const getSingleUser = async (id: string): Promise<IAllUserResponse | null> => {
 			email: true,
 			contactNo: true,
 			address: true,
-			location: true
+			location: true,
+			bookings:true
 		}
 	});
 	return isExist;

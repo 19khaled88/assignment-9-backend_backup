@@ -1,8 +1,8 @@
 import { ZodError, ZodIssue } from "zod";
 
 
-import { IGenericErrorResponse } from "../interfaces.ts/genericErrorResponse";
 import { IGenericErrorMessage } from "../interfaces.ts/genericErrorMessage";
+import { IGenericErrorResponse } from "../interfaces.ts/genericErrorResponse";
 
 
 const zodError=(error:ZodError):IGenericErrorResponse=>{
@@ -10,7 +10,6 @@ const zodError=(error:ZodError):IGenericErrorResponse=>{
         return {
             path:issue?.path[issue.path.length -1],
             message:issue?.message
-
         }
     })
     const statusCode = 400
