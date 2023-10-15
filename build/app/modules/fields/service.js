@@ -20,7 +20,14 @@ const createFieldService = (data) => __awaiter(void 0, void 0, void 0, function*
     const result = yield prisma.$transaction((transactionClient) => __awaiter(void 0, void 0, void 0, function* () {
         const isExist = yield transactionClient.field.findFirst({
             where: {
-                code: data.code
+                AND: [
+                    {
+                        code: data.code
+                    },
+                    {
+                        turfId: data.turfId
+                    }
+                ]
             }
         });
         if (isExist) {

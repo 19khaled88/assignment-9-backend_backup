@@ -9,6 +9,7 @@ const route_2 = require("../modules/turf/route");
 const route_3 = require("../modules/game-type/route");
 const route_4 = require("../modules/fields/route");
 const route_5 = require("../modules/game-offer/route");
+const route_6 = require("../modules/bookings/route");
 const userRootRoute = express_1.default.Router();
 const ModuleRoute = [
     {
@@ -26,6 +27,10 @@ const ModuleRoute = [
     {
         path: '/game-offer',
         routes: route_5.GameOfferRouter
+    },
+    {
+        path: '/booking',
+        routes: route_6.BookingRouter
     },
     {
         path: '/turf',

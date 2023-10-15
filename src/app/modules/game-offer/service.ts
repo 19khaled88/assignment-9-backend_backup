@@ -1,18 +1,28 @@
 import { GameOffer, PrismaClient } from "@prisma/client";
 import { IGameOfferesponse } from "./interfaces";
+import ApiError from "../../../errors/apiError";
 const prisma = new PrismaClient()
 
 
 const createGameOfferService = async (data: GameOffer): Promise<IGameOfferesponse | null> => {
 	const result = await prisma.$transaction(async transactionClient => {
-		// const isExist = await transactionClient.gameOffer.findFirst({
-		// 	where: {
-		// 		code: data.code
-		// 	}
-		// })
-		// if (isExist) {
-		// 	throw new ApiError(400, 'A field with this code already created')
-		// }
+		const isExist = await transactionClient.gameOffer.findFirst({
+			where: {
+				AND:[
+					{
+						turfId:data.turfId
+					},{
+						gameTypeId:data.gameTypeId
+					},
+					{
+						fieldId:data.fieldId
+					}
+				]
+			}
+		})
+		if (isExist) {
+			throw new ApiError(400, 'A field with this code already created')
+		}
 		const result = await transactionClient.gameOffer.create({
 			data: data,
 

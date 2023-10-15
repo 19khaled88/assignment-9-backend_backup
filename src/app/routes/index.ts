@@ -5,6 +5,7 @@ import { TurfRouter } from '../modules/turf/route'
 import { GameTypeRouter } from '../modules/game-type/route'
 import { FieldRouter } from '../modules/fields/route'
 import { GameOfferRouter } from '../modules/game-offer/route'
+import { BookingRouter } from '../modules/bookings/route'
 const userRootRoute = express.Router()
 
 
@@ -25,6 +26,10 @@ const ModuleRoute = [
     {
         path: '/game-offer',
         routes: GameOfferRouter
+    },
+    {
+        path: '/booking',
+        routes: BookingRouter
     },
     {
         path: '/turf',

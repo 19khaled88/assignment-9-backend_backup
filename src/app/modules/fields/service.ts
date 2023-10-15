@@ -8,7 +8,14 @@ const createFieldService = async (data: Field): Promise<IFieldResponse | null> =
 	const result = await prisma.$transaction(async transactionClient => {
 		const isExist = await transactionClient.field.findFirst({
 			where: {
-				code: data.code
+				AND:[
+					{
+						code: data.code
+					},
+					{
+						turfId:data.turfId
+					}
+				]
 			}
 		})
 		if (isExist) {
