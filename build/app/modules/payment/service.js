@@ -29,7 +29,7 @@ const createPaymentService = (data) => __awaiter(void 0, void 0, void 0, functio
         const result = yield transactionClient.payment.create({
             data: data,
         });
-        const updateBooking = yield transactionClient.booking.update({
+        yield transactionClient.booking.update({
             where: {
                 id: data.bookingId
             },

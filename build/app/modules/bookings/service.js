@@ -78,7 +78,8 @@ const createBookingService = (data) => __awaiter(void 0, void 0, void 0, functio
                 userId: true,
                 fieldId: true,
                 gameTypeId: true,
-                turfId: true
+                turfId: true,
+                payment_status: true
             }
         });
         return newGameOffer;
