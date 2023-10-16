@@ -12,6 +12,7 @@ exports.default = {
     database_url: process.env.DATABASE_URL_LOCAL,
     accessToken: process.env.JWT_ACCESS_SECRET,
     refreshToken: process.env.JWT_REFRESH_SECRET,
+    jwt_secret_token: process.env.JWT_SECRET,
     accessTokenKey: process.env.ACCESS_TOKEN_KEY,
     refreshTokenKey: process.env.REFRESH_TOKEN_KEY,
     accessTokenExpiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN,

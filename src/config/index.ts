@@ -11,7 +11,7 @@ export default {
 
 	accessToken: process.env.JWT_ACCESS_SECRET as string,
 	refreshToken: process.env.JWT_REFRESH_SECRET as string,
-
+    jwt_secret_token:process.env.JWT_SECRET as string,
 	accessTokenKey: process.env.ACCESS_TOKEN_KEY as string,
 	refreshTokenKey: process.env.REFRESH_TOKEN_KEY as string,
 
