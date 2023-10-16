@@ -38,7 +38,7 @@ const getAllGameType = async (): Promise<IGameTypeResponse[]> => {
 			id: true,
 			name: true,
 			numberOfPalyers: true,
-
+			bookings:true,
 			GameOffers:true
 		},
 
@@ -56,7 +56,7 @@ const getSingleGameType = async (id: string): Promise<IGameTypeResponse | null> 
 			id: true,
 			name: true,
 			numberOfPalyers: true,
-			
+			bookings:true,
 			GameOffers:true
 		}
 	});

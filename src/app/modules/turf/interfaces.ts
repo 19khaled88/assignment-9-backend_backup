@@ -8,13 +8,23 @@ type fields = {
 	size: string,
 	turfId: string
 }
+type bookings ={
+	start_time:string,
+	end_time:string,
+	gameOfferId:string,
+	userId:string,
+	turfId:string,
+	fieldId:string,
+	gameTypeId:string
+}
 
 export type ITurfResponse = {
 	name: string,
 	owner: string,
 	location: string,
 	gameOffers?: gameOffer[],
-	fields?: fields[]
+	fields?: fields[],
+	bookings?:bookings[]
 }
 
 

@@ -48,6 +48,7 @@ const getAllGameType = () => __awaiter(void 0, void 0, void 0, function* () {
             id: true,
             name: true,
             numberOfPalyers: true,
+            bookings: true,
             GameOffers: true
         },
     });
@@ -62,6 +63,7 @@ const getSingleGameType = (id) => __awaiter(void 0, void 0, void 0, function* ()
             id: true,
             name: true,
             numberOfPalyers: true,
+            bookings: true,
             GameOffers: true
         }
     });

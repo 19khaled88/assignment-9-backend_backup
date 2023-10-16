@@ -28,11 +28,10 @@ model User {
 }
 
 model Turf {
-  id       String @id @default(uuid())
-  name     String
-  location String
-  owner    String
-
+  id         String      @id @default(uuid())
+  name       String
+  location   String
+  owner      String
   createAt   DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
   gameOffers GameOffer[]
@@ -43,24 +42,21 @@ model Turf {
 }
 
 model GameType {
-  id              String @id @default(uuid())
+  id              String      @id @default(uuid())
   name            String
   numberOfPalyers Int
-
-  GameOffers GameOffer[]
-
-  createAt  DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  bookings  Booking[]
+  GameOffers      GameOffer[]
+  createAt        DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  bookings        Booking[]
 
   @@map("game-types")
 }
 
 model Field {
-  id   String @id @default(uuid())
-  code String
-  size String
-
+  id         String      @id @default(uuid())
+  code       String
+  size       String
   turfId     String
   turf       Turf        @relation(fields: [turfId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   createAt   DateTime    @default(now())
@@ -72,47 +68,37 @@ model Field {
 }
 
 model GameOffer {
-  id             String @id @default(uuid())
+  id             String    @id @default(uuid())
   price_per_hour Float
-
-  turfId String
-  turf   Turf   @relation(fields: [turfId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  gameTypeId String
-  gameType   GameType @relation(fields: [gameTypeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  fieldId String
-  field   Field  @relation(fields: [fieldId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  createAt  DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  bookings  Booking[]
+  turfId         String
+  turf           Turf      @relation(fields: [turfId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  gameTypeId     String
+  gameType       GameType  @relation(fields: [gameTypeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  fieldId        String
+  field          Field     @relation(fields: [fieldId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createAt       DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  bookings       Booking[]
 
   @@map("game-offers")
 }
 
 model Booking {
-  id         String @id @default(uuid())
-  start_time String
-  end_time   String
-
+  id          String    @id @default(uuid())
+  start_time  String
+  end_time    String
   gameOfferId String
   gameOffer   GameOffer @relation(fields: [gameOfferId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  turfId String
-  turf   Turf   @relation(fields: [turfId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  fieldId String
-  field   Field  @relation(fields: [fieldId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  gameTypeId String
-  gameType   GameType @relation(fields: [gameTypeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  createAt  DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  turfId      String
+  turf        Turf      @relation(fields: [turfId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  fieldId     String
+  field       Field     @relation(fields: [fieldId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  gameTypeId  String
+  gameType    GameType  @relation(fields: [gameTypeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createAt    DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@map("bookings")
 }

@@ -1,4 +1,5 @@
 import { Booking, PrismaClient } from "@prisma/client";
+import ApiError from "../../../errors/apiError";
 import { IBookingResponse } from "./interfaces";
 // import ApiError from "../../../errors/apiError";
 const prisma = new PrismaClient()
@@ -6,14 +7,52 @@ const prisma = new PrismaClient()
 
 const createBookingService = async (data: Booking): Promise<IBookingResponse | null> => {
 	const result = await prisma.$transaction(async transactionClient => {
-		// const isExist = await transactionClient.booking.findFirst({
-		// 	where: {
+		const isUserExist =await transactionClient.user.findFirst({
+			where:{
+				id:data.userId
+			}
+		})
+		if(!isUserExist){
+			throw new ApiError(400, 'This user not exist!')
+		}
+		const offeredGame = await transactionClient.gameOffer.findFirst({
+			where: {
+				id: data.gameOfferId
+			}
+		})
 
-		// 	}
-		// })
-		// if (isExist) {
-		// 	throw new ApiError(400, 'A field with this code already created')
-		// }
+		const isExist = await transactionClient.booking.findFirst({
+			where: {
+				AND: [
+					{
+						start_time: {
+							lt: data.end_time
+						},
+						end_time: {
+							gt: data.start_time
+						}
+					},
+					{
+						gameOfferId: offeredGame?.id
+					},
+					{
+						userId: data.userId
+					},
+					{
+						turfId: offeredGame?.turfId
+					},
+					{
+						fieldId: offeredGame?.fieldId
+					},
+					{
+						gameTypeId: offeredGame?.gameTypeId
+					}
+				]
+			}
+		})
+		if (isExist) {
+			throw new ApiError(400, 'A booking with this information already exist!')
+		}
 		const result = await transactionClient.booking.create({
 			data: data,
 
@@ -27,9 +66,9 @@ const createBookingService = async (data: Booking): Promise<IBookingResponse | n
 				end_time: true,
 				gameOfferId: true,
 				userId: true,
-				fieldId:true,
-				gameTypeId:true,
-				turfId:true
+				fieldId: true,
+				gameTypeId: true,
+				turfId: true
 			}
 		})
 		return newGameOffer
@@ -45,9 +84,9 @@ const getAllBookingService = async (): Promise<IBookingResponse[]> => {
 			end_time: true,
 			gameOfferId: true,
 			userId: true,
-			fieldId:true,
-			gameTypeId:true,
-			turfId:true
+			fieldId: true,
+			gameTypeId: true,
+			turfId: true
 		}
 	});
 	return result;
@@ -64,9 +103,9 @@ const getSingleBookingService = async (id: string): Promise<IBookingResponse | n
 			end_time: true,
 			gameOfferId: true,
 			userId: true,
-			fieldId:true,
-			gameTypeId:true,
-			turfId:true
+			fieldId: true,
+			gameTypeId: true,
+			turfId: true
 		}
 	});
 	return isExist;

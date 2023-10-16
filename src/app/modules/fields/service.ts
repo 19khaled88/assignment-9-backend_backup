@@ -48,7 +48,8 @@ const getAllFields = async (): Promise<IFieldResponse[]> => {
 			code: true,
 			size: true,
 			turfId: true,
-			gameOffers: true
+			gameOffers: true,
+			bookings:true
 		},
 	});
 	return result;
@@ -64,7 +65,8 @@ const getSingleField = async (id: string): Promise<IFieldResponse | null> => {
 			code: true,
 			turfId: true,
 			size: true,
-			gameOffers: true
+			gameOffers: true,
+			bookings:true
 		}
 	});
 	return isExist;

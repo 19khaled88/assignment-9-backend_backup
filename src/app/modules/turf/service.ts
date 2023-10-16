@@ -43,7 +43,8 @@ const getAllTurfs = async (): Promise<ITurfResponse[]> => {
 			location: true,
 			owner: true,
 			gameOffers:true,
-			fields:true
+			fields:true,
+			bookings:true
 		},
 
 	});
@@ -62,7 +63,8 @@ const getSingleTurf = async (id: string): Promise<ITurfResponse | null> => {
 			location: true,
 			owner: true,
 			gameOffers:true,
-			fields:true
+			fields:true,
+			bookings:true
 		}
 	});
 	return isExist;

@@ -58,7 +58,8 @@ const getAllFields = () => __awaiter(void 0, void 0, void 0, function* () {
             code: true,
             size: true,
             turfId: true,
-            gameOffers: true
+            gameOffers: true,
+            bookings: true
         },
     });
     return result;
@@ -73,7 +74,8 @@ const getSingleField = (id) => __awaiter(void 0, void 0, void 0, function* () {
             code: true,
             turfId: true,
             size: true,
-            gameOffers: true
+            gameOffers: true,
+            bookings: true
         }
     });
     return isExist;

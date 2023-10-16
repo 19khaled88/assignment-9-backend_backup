@@ -22,6 +22,8 @@ const createBookingController = async (
   }
 };
 
+
+
 const getAllBookingsController = async (req: Request, res: Response) => {
   const result = await BookingService.getAllBookingService();
   sendResponse(res, {

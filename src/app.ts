@@ -1,8 +1,8 @@
 import cors from 'cors'
 import express, { Application, NextFunction, Request, Response } from 'express'
 import httpStatus from 'http-status'
-import userRoutes from './app/routes/index'
 import globalErrorHandler from './app/middleware/globalErrorHandler'
+import userRoutes from './app/routes/index'
 
 const app: Application = express()
 
@@ -23,6 +23,7 @@ app.get('/', (req: Request, res: Response) => {
 
 //global error handler
 app.use(globalErrorHandler)
+
 
 //page not found router
 app.use((req: Request, res: Response, next: NextFunction) => {
