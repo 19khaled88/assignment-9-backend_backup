@@ -16,6 +16,7 @@ exports.UserService = void 0;
 const client_1 = require("@prisma/client");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const token_1 = require("../../../utils/token");
+const paginationHelper_1 = require("../../../helpers/paginationHelper");
 const prisma = new client_1.PrismaClient();
 const signUpServices = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const hashedPassword = yield bcrypt_1.default.hash(data.password, 12);
@@ -59,8 +60,15 @@ const signInServices = (data) => __awaiter(void 0, void 0, void 0, function* () 
     }
     throw new Error('This user not found');
 });
-const getAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
+const getAllUsers = (paginatinOptions) => __awaiter(void 0, void 0, void 0, function* () {
+    const { limit, page, skip } = paginationHelper_1.paginationHelper.calculatePagination(paginatinOptions);
     const result = yield prisma.user.findMany({
+        where: {},
+        skip,
+        take: limit,
+        orderBy: paginatinOptions.sortBy && paginatinOptions.sortOrder ? {
+            [paginatinOptions.sortBy]: paginatinOptions.sortOrder
+        } : { createAt: 'asc' },
         select: {
             id: true,
             name: true,
@@ -72,7 +80,15 @@ const getAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
             bookings: true
         },
     });
-    return result;
+    const total = yield prisma.user.count();
+    return {
+        meta: {
+            total,
+            page,
+            limit
+        },
+        data: result
+    };
 });
 const getSingleUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const isExist = yield prisma.user.findFirst({

@@ -3,6 +3,9 @@ import bcrypt from 'bcrypt';
 
 import { signJwt } from "../../../utils/token";
 import {  IUserResponse, Token } from "./interfaces";
+import { IPaginationOptions } from "../../../shared/paginationType";
+import { paginationHelper } from "../../../helpers/paginationHelper";
+import { IGenericResponse } from "../../../shared/paginationResponse";
 const prisma = new PrismaClient()
 
 
@@ -58,8 +61,17 @@ const signInServices = async (data: Partial<User>): Promise<Token | null> => {
 	throw new Error('This user not found')
 };
 
-const getAllUsers = async (): Promise<IUserResponse[]> => {
+const getAllUsers = async (paginatinOptions:IPaginationOptions): Promise<IGenericResponse<IUserResponse[]>> => {
+
+	const {limit,page,skip} = paginationHelper.calculatePagination(paginatinOptions)
+
 	const result = await prisma.user.findMany({
+		where:{},
+		skip,
+		take:limit,
+		orderBy:paginatinOptions.sortBy && paginatinOptions.sortOrder ? {
+			[paginatinOptions.sortBy]:paginatinOptions.sortOrder
+		}:{createAt:'asc'},
 		select: {
 			id:true,
 			name: true,
@@ -72,8 +84,18 @@ const getAllUsers = async (): Promise<IUserResponse[]> => {
 		},
 		
 	});
+
+	const total = await prisma.user.count()
 	
-	return result;
+	return {
+		meta:{
+			total,
+			page,
+			limit
+		},
+		data:result
+
+	}
 };
 
 const getSingleUser = async (id: string): Promise<IUserResponse | null> => {

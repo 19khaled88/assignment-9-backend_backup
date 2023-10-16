@@ -4,6 +4,8 @@ import httpStatus from "http-status";
 
 import sendResponse from "../../../shared/sendResponse";
 import { UserService } from "./service";
+import pick from "../../../shared/pick";
+import { paginationFields } from "../../../shared/paginationFields";
 
 const signUpController = async (req: Request, res: Response, next: NextFunction) => {
   
@@ -49,7 +51,8 @@ const signInController = async (req: Request, res: Response) => {
 };
 
 const getAllUsersController = async (req: Request, res: Response) => {
-  const result = await UserService.getAllUsers();
+  const paginatinOptions = pick(req.query, paginationFields)
+  const result = await UserService.getAllUsers(paginatinOptions);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

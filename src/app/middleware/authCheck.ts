@@ -17,15 +17,15 @@ const authCheck = (...requiredRoles: string[]) => async (req: Request, res: Resp
 
         //verify token
         let verifiedUser = null;
-        verifiedUser = verifyJwt
+        verifiedUser = verifyJwt(token)
         req.user = verifiedUser
 
-        // if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {
-        //     throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
-        // }
-        console.log(requiredRoles)
+        if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {
+            throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
+        }
         
-        // next()
+        
+        next()
     } catch (error) {
         next(error)
     }

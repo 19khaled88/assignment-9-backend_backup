@@ -24,13 +24,12 @@ const authCheck = (...requiredRoles) => (req, res, next) => __awaiter(void 0, vo
         }
         //verify token
         let verifiedUser = null;
-        verifiedUser = token_1.verifyJwt;
+        verifiedUser = (0, token_1.verifyJwt)(token);
         req.user = verifiedUser;
-        // if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {
-        //     throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
-        // }
-        console.log(requiredRoles);
-        // next()
+        if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {
+            throw new apiError_1.default(http_status_1.default.FORBIDDEN, 'Forbidden');
+        }
+        next();
     }
     catch (error) {
         next(error);

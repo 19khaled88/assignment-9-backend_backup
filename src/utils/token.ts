@@ -1,4 +1,4 @@
-import jwt, { Secret, SignOptions } from 'jsonwebtoken';
+import jwt, { JwtPayload, Secret, SignOptions } from 'jsonwebtoken';
 import config from '../config';
 
 export const signJwt = (payload: Object, options: SignOptions = {}) => {
@@ -7,9 +7,9 @@ export const signJwt = (payload: Object, options: SignOptions = {}) => {
 	});
 };
 // process.env.ACCESS_TOKEN_KEY
-export const verifyJwt = <T>(token: string): T  => {
+export const verifyJwt = <T>(token: string): JwtPayload  => {
 	try {
-		return jwt.verify(token, config.accessTokenKey as Secret) as T;
+		return jwt.verify(token, config.accessTokenKey as Secret) as JwtPayload;
 	} catch (error) {
 		throw new Error('Invalid token found')
 		
