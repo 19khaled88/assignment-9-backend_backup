@@ -21,4 +21,11 @@ export type IUserResponse = {
 	bookings?: bookings[]
 }
 
+export type IFilters ={
+    searchTerm?:string
+  }
+
+export const search_fields_constant = ['address','location','contactNo']
+
+export const searchFields = ['searchTerm','address','location','contactNo']
 

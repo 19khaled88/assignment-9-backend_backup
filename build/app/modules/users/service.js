@@ -8,6 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -15,8 +26,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const client_1 = require("@prisma/client");
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const token_1 = require("../../../utils/token");
 const paginationHelper_1 = require("../../../helpers/paginationHelper");
+const token_1 = require("../../../utils/token");
+const interfaces_1 = require("./interfaces");
 const prisma = new client_1.PrismaClient();
 const signUpServices = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const hashedPassword = yield bcrypt_1.default.hash(data.password, 12);
@@ -60,10 +72,36 @@ const signInServices = (data) => __awaiter(void 0, void 0, void 0, function* () 
     }
     throw new Error('This user not found');
 });
-const getAllUsers = (paginatinOptions) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllUsers = (paginatinOptions, filterOptions) => __awaiter(void 0, void 0, void 0, function* () {
+    const { searchTerm } = filterOptions, filterData = __rest(filterOptions, ["searchTerm"]);
     const { limit, page, skip } = paginationHelper_1.paginationHelper.calculatePagination(paginatinOptions);
+    let andConditions = [];
+    //searching code
+    if (searchTerm) {
+        andConditions.push({
+            OR: interfaces_1.search_fields_constant.map(field => {
+                return {
+                    [field]: {
+                        $regex: searchTerm,
+                        $options: 'i',
+                    },
+                };
+            }),
+        });
+    }
+    //filtering code
+    if (Object.keys(filterData).length > 0) {
+        andConditions.push({
+            AND: Object.keys(filterData).map((key) => ({
+                [key]: {
+                    equals: filterData[key]
+                }
+            }))
+        });
+    }
+    const whereCondition = andConditions.length > 0 ? { AND: andConditions } : {};
     const result = yield prisma.user.findMany({
-        where: {},
+        where: whereCondition,
         skip,
         take: limit,
         orderBy: paginatinOptions.sortBy && paginatinOptions.sortOrder ? {

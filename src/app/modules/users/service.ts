@@ -1,11 +1,11 @@
-import { PrismaClient, User } from "@prisma/client";
+import { Prisma, PrismaClient, User } from "@prisma/client";
 import bcrypt from 'bcrypt';
 
-import { signJwt } from "../../../utils/token";
-import {  IUserResponse, Token } from "./interfaces";
-import { IPaginationOptions } from "../../../shared/paginationType";
 import { paginationHelper } from "../../../helpers/paginationHelper";
 import { IGenericResponse } from "../../../shared/paginationResponse";
+import { IPaginationOptions } from "../../../shared/paginationType";
+import { signJwt } from "../../../utils/token";
+import { IFilters, IUserResponse, Token, search_fields_constant } from "./interfaces";
 const prisma = new PrismaClient()
 
 
@@ -22,7 +22,7 @@ const signUpServices = async (data: User): Promise<IUserResponse | null> => {
 				id: result.id
 			},
 			select: {
-				id:true,
+				id: true,
 				name: true,
 				role: true,
 				email: true,
@@ -61,39 +61,69 @@ const signInServices = async (data: Partial<User>): Promise<Token | null> => {
 	throw new Error('This user not found')
 };
 
-const getAllUsers = async (paginatinOptions:IPaginationOptions): Promise<IGenericResponse<IUserResponse[]>> => {
+const getAllUsers = async (paginatinOptions: IPaginationOptions, filterOptions: IFilters): Promise<IGenericResponse<IUserResponse[]>> => {
+	const { searchTerm, ...filterData } = filterOptions
+	const { limit, page, skip } = paginationHelper.calculatePagination(paginatinOptions)
 
-	const {limit,page,skip} = paginationHelper.calculatePagination(paginatinOptions)
+	let andConditions = []
+
+	//searching code
+	if (searchTerm) {
+		andConditions.push({
+			OR: search_fields_constant.map(field => {
+				return {
+					[field]: {
+						$regex: searchTerm,
+						$options: 'i',
+					},
+				}
+			}),
+		})
+	}
+
+
+	//filtering code
+	if (Object.keys(filterData).length > 0) {
+        andConditions.push({
+            AND: Object.keys(filterData).map((key) => ({
+                [key]: {
+                    equals: (filterData as any)[key]
+                }
+            }))
+        })
+    }
+
+	const whereCondition: Prisma.UserWhereInput = andConditions.length > 0 ? { AND: andConditions } : {}
 
 	const result = await prisma.user.findMany({
-		where:{},
+		where:whereCondition,
 		skip,
-		take:limit,
-		orderBy:paginatinOptions.sortBy && paginatinOptions.sortOrder ? {
-			[paginatinOptions.sortBy]:paginatinOptions.sortOrder
-		}:{createAt:'asc'},
+		take: limit,
+		orderBy: paginatinOptions.sortBy && paginatinOptions.sortOrder ? {
+			[paginatinOptions.sortBy]: paginatinOptions.sortOrder
+		} : { createAt: 'asc' },
 		select: {
-			id:true,
+			id: true,
 			name: true,
 			role: true,
 			email: true,
 			contactNo: true,
 			address: true,
 			location: true,
-			bookings:true
+			bookings: true
 		},
-		
+
 	});
 
-	const total = await prisma.user.count()
-	
+	const total = await prisma.user.count();
+
 	return {
-		meta:{
+		meta: {
 			total,
 			page,
 			limit
 		},
-		data:result
+		data: result
 
 	}
 };
@@ -103,15 +133,15 @@ const getSingleUser = async (id: string): Promise<IUserResponse | null> => {
 		where: {
 			id: id,
 		},
-		select:{
-			id:true,
+		select: {
+			id: true,
 			name: true,
 			role: true,
 			email: true,
 			contactNo: true,
 			address: true,
 			location: true,
-			bookings:true
+			bookings: true
 		}
 	});
 	return isExist;
