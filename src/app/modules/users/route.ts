@@ -14,6 +14,6 @@ router.delete('/delete/:id', UserController.deleteUserControler)
 router.put('/update/:id', UserController.updateUserController)
 router.post('/signUp',validateRequest(UserValidation.create), UserController.signUpController)
 router.post('/signIn', UserController.signInController)
-router.get('/allUser', UserController.getAllUsersController)
+router.get('/allUsers', UserController.getAllUsersController)
 
 export const UserRouter = router

@@ -10,6 +10,6 @@ router.delete('/delete/:id', GameTypeController.deleteGameTypeControler)
 router.put('/update/:id', GameTypeController.updateGameTypeController)
 router.get('/single/:id', GameTypeController.getSingleGameTypeController)
 router.post('/create',validateRequest(GameTypeValidation.create), GameTypeController.createController)
-router.get('/allGameType', GameTypeController.getAllGameTypeController)
+router.get('/allGameTypes', GameTypeController.getAllGameTypeController)
 
 export const GameTypeRouter = router

@@ -15,5 +15,5 @@ router.delete('/delete/:id', controller_1.UserController.deleteUserControler);
 router.put('/update/:id', controller_1.UserController.updateUserController);
 router.post('/signUp', (0, validationMiddleware_1.default)(validation_1.UserValidation.create), controller_1.UserController.signUpController);
 router.post('/signIn', controller_1.UserController.signInController);
-router.get('/allUser', controller_1.UserController.getAllUsersController);
+router.get('/allUsers', controller_1.UserController.getAllUsersController);
 exports.UserRouter = router;

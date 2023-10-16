@@ -9,6 +9,6 @@ router.delete('/delete/:id', TurfController.deleteTurfControler)
 router.put('/update/:id', TurfController.updateTurfController)
 router.get('/single/:id', TurfController.getSingleTurfController)
 router.post('/create',validateRequest(TurfValidation.create), TurfController.createController)
-router.get('/allTurf', TurfController.getAllTurfsController)
+router.get('/allTurfs', TurfController.getAllTurfsController)
 
 export const TurfRouter = router

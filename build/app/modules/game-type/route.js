@@ -13,5 +13,5 @@ router.delete('/delete/:id', controller_1.GameTypeController.deleteGameTypeContr
 router.put('/update/:id', controller_1.GameTypeController.updateGameTypeController);
 router.get('/single/:id', controller_1.GameTypeController.getSingleGameTypeController);
 router.post('/create', (0, validationMiddleware_1.default)(validation_1.GameTypeValidation.create), controller_1.GameTypeController.createController);
-router.get('/allGameType', controller_1.GameTypeController.getAllGameTypeController);
+router.get('/allGameTypes', controller_1.GameTypeController.getAllGameTypeController);
 exports.GameTypeRouter = router;

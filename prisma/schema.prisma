@@ -84,27 +84,40 @@ model GameOffer {
 }
 
 model Booking {
-  id          String    @id @default(uuid())
-  start_time  String
-  end_time    String
-  gameOfferId String
-  gameOffer   GameOffer @relation(fields: [gameOfferId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId      String
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  turfId      String
-  turf        Turf      @relation(fields: [turfId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  fieldId     String
-  field       Field     @relation(fields: [fieldId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  gameTypeId  String
-  gameType    GameType  @relation(fields: [gameTypeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  createAt    DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id             String         @id @default(uuid())
+  start_time     String
+  end_time       String
+  gameOfferId    String
+  gameOffer      GameOffer      @relation(fields: [gameOfferId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId         String
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  turfId         String
+  turf           Turf           @relation(fields: [turfId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  fieldId        String
+  field          Field          @relation(fields: [fieldId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  gameTypeId     String
+  gameType       GameType       @relation(fields: [gameTypeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createAt       DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  payment_status StatusEnumType @default(PENDING)
+  payments       Payment[]
 
   @@map("bookings")
+}
+
+model Payment {
+  id        String  @id @default(uuid())
+  bookingId String
+  booking   Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 enum RoleEnumType {
   ADMIN
   USER
   SUPER_ADMIN
+}
+
+enum StatusEnumType {
+  PENDING
+  EXECUTED
 }
