@@ -19,7 +19,7 @@ const createPaymentService = async (data: Payment): Promise<IPaymentResponse | n
 			data: data,
 		});
 
-		const updateBooking = await transactionClient.booking.update({
+		await transactionClient.booking.update({
 			where:{
 				id:data.bookingId
 			},

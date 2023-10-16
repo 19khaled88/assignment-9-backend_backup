@@ -68,7 +68,8 @@ const createBookingService = async (data: Booking): Promise<IBookingResponse | n
 				userId: true,
 				fieldId: true,
 				gameTypeId: true,
-				turfId: true
+				turfId: true,
+				payment_status:true
 			}
 		})
 		return newGameOffer
