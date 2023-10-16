@@ -5,6 +5,7 @@ type IBooking = {
 	userId:string
 }
 
+
 export type IGameOfferesponse = {
 	price_per_hour:number,
 	turfId: string,
@@ -12,6 +13,7 @@ export type IGameOfferesponse = {
 	fieldId:string,
 	bookings?:IBooking[]
 }
+
 
 
 

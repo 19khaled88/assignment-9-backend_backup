@@ -1,11 +1,28 @@
 import { GameOffer, PrismaClient } from "@prisma/client";
-import { IGameOfferesponse } from "./interfaces";
 import ApiError from "../../../errors/apiError";
+import { IGameOfferesponse } from "./interfaces";
 const prisma = new PrismaClient()
 
 
 const createGameOfferService = async (data: GameOffer): Promise<IGameOfferesponse | null> => {
 	const result = await prisma.$transaction(async transactionClient => {
+		const isValid =await transactionClient.turf.findFirst({
+			where:{
+				AND: [
+					{ id: data.turfId },
+					{
+						fields: {
+							some: {
+								id: data.fieldId
+							}
+						}
+					}
+				],
+			}
+		})
+		if(!isValid){
+			throw new ApiError(400, 'No field to the given turf registered yet!')
+		}
 		const isExist = await transactionClient.gameOffer.findFirst({
 			where: {
 				AND:[
@@ -44,7 +61,9 @@ const createGameOfferService = async (data: GameOffer): Promise<IGameOfferespons
 	return result;
 };
 
+
 const getAllGameOffers = async (): Promise<IGameOfferesponse[]> => {
+
 	const result = await prisma.gameOffer.findMany({
 		select: {
 			id: true,
@@ -52,7 +71,7 @@ const getAllGameOffers = async (): Promise<IGameOfferesponse[]> => {
 			turfId: true,
 			gameTypeId: true,
 			fieldId: true,
-			bookings:true
+			bookings: true
 		},
 	});
 	return result;
@@ -69,7 +88,7 @@ const getSingleGameOffer = async (id: string): Promise<IGameOfferesponse | null>
 			turfId: true,
 			gameTypeId: true,
 			fieldId: true,
-			bookings:true
+			bookings: true
 		}
 	});
 	return isExist;

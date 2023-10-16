@@ -6,6 +6,14 @@ const prisma = new PrismaClient()
 
 const createFieldService = async (data: Field): Promise<IFieldResponse | null> => {
 	const result = await prisma.$transaction(async transactionClient => {
+		const ifTrufExist =await transactionClient.turf.findFirst({
+			where:{
+				id:data.turfId
+			}
+		})
+		if(!ifTrufExist){
+			throw new ApiError(400, 'This turf does not exist!!')
+		}
 		const isExist = await transactionClient.field.findFirst({
 			where: {
 				AND:[

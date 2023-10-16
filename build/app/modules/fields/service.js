@@ -18,6 +18,14 @@ const apiError_1 = __importDefault(require("../../../errors/apiError"));
 const prisma = new client_1.PrismaClient();
 const createFieldService = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield prisma.$transaction((transactionClient) => __awaiter(void 0, void 0, void 0, function* () {
+        const ifTrufExist = yield transactionClient.turf.findFirst({
+            where: {
+                id: data.turfId
+            }
+        });
+        if (!ifTrufExist) {
+            throw new apiError_1.default(400, 'This turf does not exist!!');
+        }
         const isExist = yield transactionClient.field.findFirst({
             where: {
                 AND: [

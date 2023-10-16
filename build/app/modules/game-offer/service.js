@@ -18,6 +18,23 @@ const apiError_1 = __importDefault(require("../../../errors/apiError"));
 const prisma = new client_1.PrismaClient();
 const createGameOfferService = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield prisma.$transaction((transactionClient) => __awaiter(void 0, void 0, void 0, function* () {
+        const isValid = yield transactionClient.turf.findFirst({
+            where: {
+                AND: [
+                    { id: data.turfId },
+                    {
+                        fields: {
+                            some: {
+                                id: data.fieldId
+                            }
+                        }
+                    }
+                ],
+            }
+        });
+        if (!isValid) {
+            throw new apiError_1.default(400, 'No field to the given turf registered yet!');
+        }
         const isExist = yield transactionClient.gameOffer.findFirst({
             where: {
                 AND: [
