@@ -71,5 +71,5 @@ exports.BookingController = {
     getAllBookingsController,
     getSingleBookingController,
     deleteBookingController,
-    updateBookingController
+    updateBookingController,
 };

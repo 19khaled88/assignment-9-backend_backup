@@ -3,6 +3,9 @@ export type IBookingResponse = {
 	end_time: string,
 	gameOfferId:string,
 	userId:string,
+	turfId:string,
+	fieldId:string,
+	gameTypeId:string
 }
 
 

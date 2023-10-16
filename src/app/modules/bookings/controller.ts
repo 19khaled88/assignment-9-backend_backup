@@ -1,11 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
 
-
 import sendResponse from "../../../shared/sendResponse";
 import { BookingService } from "./service";
 
-const createBookingController = async (req: Request, res: Response, next: NextFunction) => {
+const createBookingController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const result = await BookingService.createBookingService(req.body);
     sendResponse(res, {
@@ -15,7 +18,7 @@ const createBookingController = async (req: Request, res: Response, next: NextFu
       data: result,
     });
   } catch (error) {
-    next(error)
+    next(error);
   }
 };
 
@@ -40,7 +43,10 @@ const getSingleBookingController = async (req: Request, res: Response) => {
 };
 
 const updateBookingController = async (req: Request, res: Response) => {
-  const isUpdate = await BookingService.updateBookingService(req.params.id, req.body);
+  const isUpdate = await BookingService.updateBookingService(
+    req.params.id,
+    req.body
+  );
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -64,5 +70,5 @@ export const BookingController = {
   getAllBookingsController,
   getSingleBookingController,
   deleteBookingController,
-  updateBookingController
+  updateBookingController,
 };

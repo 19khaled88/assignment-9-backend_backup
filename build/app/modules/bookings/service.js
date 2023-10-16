@@ -33,7 +33,10 @@ const createBookingService = (data) => __awaiter(void 0, void 0, void 0, functio
                 start_time: true,
                 end_time: true,
                 gameOfferId: true,
-                userId: true
+                userId: true,
+                fieldId: true,
+                gameTypeId: true,
+                turfId: true
             }
         });
         return newGameOffer;
@@ -47,7 +50,10 @@ const getAllBookingService = () => __awaiter(void 0, void 0, void 0, function* (
             start_time: true,
             end_time: true,
             gameOfferId: true,
-            userId: true
+            userId: true,
+            fieldId: true,
+            gameTypeId: true,
+            turfId: true
         }
     });
     return result;
@@ -62,7 +68,10 @@ const getSingleBookingService = (id) => __awaiter(void 0, void 0, void 0, functi
             start_time: true,
             end_time: true,
             gameOfferId: true,
-            userId: true
+            userId: true,
+            fieldId: true,
+            gameTypeId: true,
+            turfId: true
         }
     });
     return isExist;

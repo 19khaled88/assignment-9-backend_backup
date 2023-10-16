@@ -13,6 +13,15 @@ const create = zod_1.z.object({
         gameOfferId: zod_1.z.string({
             required_error: 'Game offer ID is required or field not match'
         }),
+        turfId: zod_1.z.string({
+            required_error: 'Turf ID is required or field not match'
+        }),
+        fieldId: zod_1.z.string({
+            required_error: 'Field ID is required or field not match'
+        }),
+        gameTypeId: zod_1.z.string({
+            required_error: 'Game type ID is required or field not match'
+        }),
         userId: zod_1.z.string({
             required_error: 'User Id is required or field not match'
         })

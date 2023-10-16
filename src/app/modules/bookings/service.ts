@@ -26,7 +26,10 @@ const createBookingService = async (data: Booking): Promise<IBookingResponse | n
 				start_time: true,
 				end_time: true,
 				gameOfferId: true,
-				userId: true
+				userId: true,
+				fieldId:true,
+				gameTypeId:true,
+				turfId:true
 			}
 		})
 		return newGameOffer
@@ -41,7 +44,10 @@ const getAllBookingService = async (): Promise<IBookingResponse[]> => {
 			start_time: true,
 			end_time: true,
 			gameOfferId: true,
-			userId: true
+			userId: true,
+			fieldId:true,
+			gameTypeId:true,
+			turfId:true
 		}
 	});
 	return result;
@@ -57,7 +63,10 @@ const getSingleBookingService = async (id: string): Promise<IBookingResponse | n
 			start_time: true,
 			end_time: true,
 			gameOfferId: true,
-			userId: true
+			userId: true,
+			fieldId:true,
+			gameTypeId:true,
+			turfId:true
 		}
 	});
 	return isExist;
