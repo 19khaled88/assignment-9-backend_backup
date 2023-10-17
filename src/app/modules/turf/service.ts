@@ -1,6 +1,11 @@
-import { PrismaClient, Turf } from "@prisma/client";
+import { Prisma, PrismaClient, Turf } from "@prisma/client";
 import ApiError from "../../../errors/apiError";
-import { ITurfResponse } from "./interfaces";
+import { ITurfResponse, turf_search_fields_constant } from "./interfaces";
+import { IPaginationOptions } from "../../../shared/paginationType";
+
+import { paginationHelper } from "../../../helpers/paginationHelper";
+import { IGenericResponse } from "../../../shared/paginationResponse";
+import { IFilters } from "../../../shared/filterType";
 const prisma = new PrismaClient()
 
 
@@ -35,8 +40,48 @@ const createTurfService = async (data: Turf): Promise<ITurfResponse | null> => {
 	return result;
 };
 
-const getAllTurfs = async (): Promise<ITurfResponse[]> => {
+const getAllTurfs = async (paginatinOptions:IPaginationOptions,filterOptions:IFilters): Promise<IGenericResponse<ITurfResponse[]>> => {
+
+	const {searchTerm, ...filterData} = filterOptions
+	const {limit,page,skip} = paginationHelper.calculatePagination(paginatinOptions)
+
+	let andConditions = []
+
+	//searching code
+	if (searchTerm) {
+		andConditions.push({
+			OR: turf_search_fields_constant.map(field => {
+				return {
+					[field]: {
+						contains: searchTerm,
+						mode: 'insensitive'
+					},
+				}
+			}),
+		})
+	}
+
+
+	//filtering code
+	if (Object.keys(filterData).length > 0) {
+		andConditions.push({
+			AND: Object.keys(filterData).map((key) => ({
+				[key]: {
+					equals: (filterData as any)[key]
+				}
+			}))
+		})
+	}
+
+	const whereCondition: Prisma.TurfWhereInput = andConditions.length > 0 ? { AND: andConditions } : {}
+
 	const result = await prisma.turf.findMany({
+		where:whereCondition,
+		skip,
+		take:limit,
+		orderBy:paginatinOptions.sortBy && paginatinOptions.sortOrder ? {
+			[paginatinOptions.sortBy]:paginatinOptions.sortOrder
+		}:{createAt:'asc'},
 		select: {
 			id: true,
 			name: true,
@@ -48,8 +93,15 @@ const getAllTurfs = async (): Promise<ITurfResponse[]> => {
 		},
 
 	});
-
-	return result;
+	const total = await prisma.turf.count()
+	return {
+		meta:{
+			limit,
+			page,
+			total
+		},
+		data:result
+	}
 };
 
 const getSingleTurf = async (id: string): Promise<ITurfResponse | null> => {

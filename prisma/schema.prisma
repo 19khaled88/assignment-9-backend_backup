@@ -107,8 +107,12 @@ model Booking {
 
 model Payment {
   id        String  @id @default(uuid())
+  createAt       DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
   bookingId String
   booking   Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("payments")
 }
 
 enum RoleEnumType {

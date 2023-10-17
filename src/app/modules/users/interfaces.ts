@@ -23,9 +23,9 @@ export type IUserResponse = {
 
 export type IFilters ={
     searchTerm?:string
-  }
+}
 
-export const search_fields_constant = ['address','location','contactNo']
+export const user_search_fields_constant = ['address','location','contactNo']
 
 export const searchFields = ['searchTerm','address','location','contactNo']
 

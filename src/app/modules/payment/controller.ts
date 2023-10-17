@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
+import { paginationFields } from "../../../shared/paginationFields";
+import pick from "../../../shared/pick";
 import sendResponse from "../../../shared/sendResponse";
 import { PaymentService } from "./service";
 
@@ -18,7 +20,9 @@ const createController = async (req: Request, res: Response, next: NextFunction)
 };
 
 const getAllPaymentController = async (req: Request, res: Response) => {
-  const result = await PaymentService.getAllPayment();
+  const filterOptions = pick(req.query, ['searchTerm','bookingId'])
+  const paginatinOptions = pick(req.query, paginationFields)
+  const result = await PaymentService.getAllPayment(paginatinOptions,filterOptions);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

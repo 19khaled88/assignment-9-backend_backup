@@ -5,7 +5,8 @@ import { paginationHelper } from "../../../helpers/paginationHelper";
 import { IGenericResponse } from "../../../shared/paginationResponse";
 import { IPaginationOptions } from "../../../shared/paginationType";
 import { signJwt } from "../../../utils/token";
-import { IFilters, IUserResponse, Token, search_fields_constant } from "./interfaces";
+import {  IUserResponse, Token, user_search_fields_constant } from "./interfaces";
+import { IFilters } from "../../../shared/filterType";
 const prisma = new PrismaClient()
 
 
@@ -70,11 +71,11 @@ const getAllUsers = async (paginatinOptions: IPaginationOptions, filterOptions: 
 	//searching code
 	if (searchTerm) {
 		andConditions.push({
-			OR: search_fields_constant.map(field => {
+			OR: user_search_fields_constant.map(field => {
 				return {
 					[field]: {
-						$regex: searchTerm,
-						$options: 'i',
+						contains: searchTerm,
+						mode: 'insensitive'
 					},
 				}
 			}),
@@ -84,19 +85,19 @@ const getAllUsers = async (paginatinOptions: IPaginationOptions, filterOptions: 
 
 	//filtering code
 	if (Object.keys(filterData).length > 0) {
-        andConditions.push({
-            AND: Object.keys(filterData).map((key) => ({
-                [key]: {
-                    equals: (filterData as any)[key]
-                }
-            }))
-        })
-    }
+		andConditions.push({
+			AND: Object.keys(filterData).map((key) => ({
+				[key]: {
+					equals: (filterData as any)[key]
+				}
+			}))
+		})
+	}
 
 	const whereCondition: Prisma.UserWhereInput = andConditions.length > 0 ? { AND: andConditions } : {}
 
 	const result = await prisma.user.findMany({
-		where:whereCondition,
+		where: whereCondition,
 		skip,
 		take: limit,
 		orderBy: paginatinOptions.sortBy && paginatinOptions.sortOrder ? {

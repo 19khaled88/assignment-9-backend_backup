@@ -79,11 +79,11 @@ const getAllUsers = (paginatinOptions, filterOptions) => __awaiter(void 0, void 
     //searching code
     if (searchTerm) {
         andConditions.push({
-            OR: interfaces_1.search_fields_constant.map(field => {
+            OR: interfaces_1.user_search_fields_constant.map(field => {
                 return {
                     [field]: {
-                        $regex: searchTerm,
-                        $options: 'i',
+                        contains: searchTerm,
+                        mode: 'insensitive'
                     },
                 };
             }),

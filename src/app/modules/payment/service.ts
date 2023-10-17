@@ -1,6 +1,10 @@
-import { Payment, PrismaClient, StatusEnumType } from "@prisma/client";
+import { Payment, Prisma, PrismaClient, StatusEnumType } from "@prisma/client";
 import ApiError from "../../../errors/apiError";
-import { IPaymentResponse } from "./interfaces";
+import { IPaymentResponse, payment_search_fields_constant } from "./interfaces";
+
+import { IPaginationOptions } from "../../../shared/paginationType";
+import { paginationHelper } from "../../../helpers/paginationHelper";
+import { IFilters } from "../../../shared/filterType";
 const prisma = new PrismaClient()
 
 
@@ -41,8 +45,46 @@ const createPaymentService = async (data: Payment): Promise<IPaymentResponse | n
 	return result;
 };
 
-const getAllPayment = async (): Promise<IPaymentResponse[]> => {
+const getAllPayment = async (paginatinOptions:IPaginationOptions,filterOptions:IFilters): Promise<IPaymentResponse[]> => {
+	const { searchTerm, ...filterData } = filterOptions
+	const { limit, page, skip } = paginationHelper.calculatePagination(paginatinOptions)
+
+	let andConditions = []
+
+	//searching code
+	if (searchTerm) {
+		andConditions.push({
+			OR: payment_search_fields_constant.map(field => {
+				return {
+					[field]: {
+						contains: searchTerm,
+						mode: 'insensitive'
+					},
+				}
+			}),
+		})
+	}
+
+
+	//filtering code
+	if (Object.keys(filterData).length > 0) {
+		andConditions.push({
+			AND: Object.keys(filterData).map((key) => ({
+				[key]: {
+					equals: (filterData as any)[key]
+				}
+			}))
+		})
+	}
+
+	const whereCondition: Prisma.PaymentWhereInput = andConditions.length > 0 ? { AND: andConditions } : {}
 	const result = await prisma.payment.findMany({
+		where:whereCondition,
+		skip,
+		take:limit,
+		orderBy:paginatinOptions.sortOrder && paginatinOptions.sortBy ? {
+			[paginatinOptions.sortBy]:paginatinOptions.sortOrder
+		} : {},
 		select: {
 			id: true,
 			bookingId: true,

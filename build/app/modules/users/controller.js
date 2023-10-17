@@ -18,7 +18,6 @@ const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
 const service_1 = require("./service");
 const pick_1 = __importDefault(require("../../../shared/pick"));
 const paginationFields_1 = require("../../../shared/paginationFields");
-const interfaces_1 = require("./interfaces");
 const signUpController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield service_1.UserService.signUpServices(req.body);
@@ -63,7 +62,7 @@ const signInController = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 const getAllUsersController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const filterOptions = (0, pick_1.default)(req.query, interfaces_1.searchFields);
+    const filterOptions = (0, pick_1.default)(req.query, ['searchTerm', 'address', 'location', 'contactNo']);
     const paginatinOptions = (0, pick_1.default)(req.query, paginationFields_1.paginationFields);
     const result = yield service_1.UserService.getAllUsers(paginatinOptions, filterOptions);
     (0, sendResponse_1.default)(res, {

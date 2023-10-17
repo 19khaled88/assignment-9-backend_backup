@@ -53,7 +53,7 @@ const signInController = async (req: Request, res: Response) => {
 };
 
 const getAllUsersController = async (req: Request, res: Response) => {
-  const filterOptions = pick(req.query, searchFields)
+  const filterOptions = pick(req.query, ['searchTerm','address','location','contactNo'])
   const paginatinOptions = pick(req.query, paginationFields)
   const result = await UserService.getAllUsers(paginatinOptions,filterOptions);
   sendResponse(res, {

@@ -27,5 +27,7 @@ export type ITurfResponse = {
 	bookings?:bookings[]
 }
 
+export const turf_search_fields_constant = ['name','location','owner']
+
 
 

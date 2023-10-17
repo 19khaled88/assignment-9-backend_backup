@@ -4,6 +4,8 @@ import httpStatus from "http-status";
 
 import sendResponse from "../../../shared/sendResponse";
 import { TurfService } from "./service";
+import pick from "../../../shared/pick";
+import { paginationFields } from "../../../shared/paginationFields";
 
 const createController = async (req: Request, res: Response, next: NextFunction) => {
   
@@ -21,7 +23,9 @@ const createController = async (req: Request, res: Response, next: NextFunction)
 };
 
 const getAllTurfsController = async (req: Request, res: Response) => {
-  const result = await TurfService.getAllTurfs();
+  const filterOptions = pick(req.query,['name','location','owner'])
+  const paginationOptions = pick(req.query, paginationFields)
+  const result = await TurfService.getAllTurfs(paginationOptions,filterOptions);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
