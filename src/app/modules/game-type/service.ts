@@ -1,6 +1,10 @@
-import { GameType, PrismaClient } from "@prisma/client";
+import { GameType, Prisma, PrismaClient } from "@prisma/client";
 import ApiError from "../../../errors/apiError";
-import { IGameTypeResponse } from "./interfaces";
+import { IGameTypeResponse, game_type_search_fields_constant } from "./interfaces";
+import { IPaginationOptions } from "../../../shared/paginationType";
+import { IFilters } from "../../../shared/filterType";
+import { paginationHelper } from "../../../helpers/paginationHelper";
+import { IGenericResponse } from "../../../shared/paginationResponse";
 const prisma = new PrismaClient()
 
 
@@ -32,8 +36,47 @@ const createGameTypeService = async (data: GameType): Promise<IGameTypeResponse 
 	return result;
 };
 
-const getAllGameType = async (): Promise<IGameTypeResponse[]> => {
+const getAllGameType = async (paginatinOptions:IPaginationOptions,filterOptions:IFilters): Promise<IGenericResponse<IGameTypeResponse[]>> => {
+	const { searchTerm, ...filterData } = filterOptions
+	const { limit, page, skip } = paginationHelper.calculatePagination(paginatinOptions)
+
+	let andConditions = []
+
+	//searching code
+	if (searchTerm) {
+		andConditions.push({
+			OR: game_type_search_fields_constant.map(field => {
+				return {
+					[field]: {
+						contains: searchTerm,
+						mode: 'insensitive'
+					},
+				}
+			}),
+		})
+	}
+
+
+	//filtering code
+	if (Object.keys(filterData).length > 0) {
+		andConditions.push({
+			AND: Object.keys(filterData).map((key) => ({
+				[key]: {
+					equals: (filterData as any)[key]
+				}
+			}))
+		})
+	}
+
+	const whereCondition: Prisma.GameTypeWhereInput = andConditions.length > 0 ? { AND: andConditions } : {}
+
 	const result = await prisma.gameType.findMany({
+		where:whereCondition,
+		skip,
+		take:limit,
+		orderBy:paginatinOptions.sortBy && paginatinOptions.sortOrder ? {
+			[paginatinOptions.sortBy]:paginatinOptions.sortOrder
+		}:{createAt:'asc'},
 		select: {
 			id: true,
 			name: true,
@@ -43,8 +86,16 @@ const getAllGameType = async (): Promise<IGameTypeResponse[]> => {
 		},
 
 	});
+	const total = await prisma.gameType.count()
 
-	return result;
+	return {
+		meta:{
+			page,
+			limit,
+			total
+		},
+		data:result
+	}
 };
 
 const getSingleGameType = async (id: string): Promise<IGameTypeResponse | null> => {

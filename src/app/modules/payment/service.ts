@@ -5,6 +5,7 @@ import { IPaymentResponse, payment_search_fields_constant } from "./interfaces";
 import { IPaginationOptions } from "../../../shared/paginationType";
 import { paginationHelper } from "../../../helpers/paginationHelper";
 import { IFilters } from "../../../shared/filterType";
+import { IGenericResponse } from "../../../shared/paginationResponse";
 const prisma = new PrismaClient()
 
 
@@ -45,7 +46,7 @@ const createPaymentService = async (data: Payment): Promise<IPaymentResponse | n
 	return result;
 };
 
-const getAllPayment = async (paginatinOptions:IPaginationOptions,filterOptions:IFilters): Promise<IPaymentResponse[]> => {
+const getAllPayment = async (paginatinOptions:IPaginationOptions,filterOptions:IFilters): Promise<IGenericResponse<IPaymentResponse[]>> => {
 	const { searchTerm, ...filterData } = filterOptions
 	const { limit, page, skip } = paginationHelper.calculatePagination(paginatinOptions)
 
@@ -91,7 +92,14 @@ const getAllPayment = async (paginatinOptions:IPaginationOptions,filterOptions:I
 			
 		},
 	});
-	return result;
+	const total = await prisma.payment.count()
+	return {
+		meta:{
+			page,
+			limit,
+			total
+		},data:result
+	}
 };
 
 const getSinglePayment = async (id: string): Promise<IPaymentResponse | null> => {

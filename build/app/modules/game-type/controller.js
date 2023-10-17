@@ -16,6 +16,8 @@ exports.GameTypeController = void 0;
 const http_status_1 = __importDefault(require("http-status"));
 const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
 const service_1 = require("./service");
+const pick_1 = __importDefault(require("../../../shared/pick"));
+const paginationFields_1 = require("../../../shared/paginationFields");
 const createController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield service_1.GameTypeService.createGameTypeService(req.body);
@@ -31,7 +33,9 @@ const createController = (req, res, next) => __awaiter(void 0, void 0, void 0, f
     }
 });
 const getAllGameTypeController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield service_1.GameTypeService.getAllGameType();
+    const filterOptions = (0, pick_1.default)(req.query, ['searchTerm', 'name', 'numberOfPalyers']);
+    const paginatinOptions = (0, pick_1.default)(req.query, paginationFields_1.paginationFields);
+    const result = yield service_1.GameTypeService.getAllGameType(paginatinOptions, filterOptions);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,

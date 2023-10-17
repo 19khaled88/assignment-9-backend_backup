@@ -23,3 +23,4 @@ export type IGameTypeResponse = {
 
 
 
+export const game_type_search_fields_constant = ['name','numberOfPalyers']

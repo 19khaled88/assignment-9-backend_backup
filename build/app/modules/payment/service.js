@@ -102,7 +102,14 @@ const getAllPayment = (paginatinOptions, filterOptions) => __awaiter(void 0, voi
             bookingId: true,
         },
     });
-    return result;
+    const total = yield prisma.payment.count();
+    return {
+        meta: {
+            page,
+            limit,
+            total
+        }, data: result
+    };
 });
 const getSinglePayment = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const isExist = yield prisma.payment.findFirstOrThrow({
