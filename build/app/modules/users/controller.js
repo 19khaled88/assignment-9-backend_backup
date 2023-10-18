@@ -14,18 +14,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const http_status_1 = __importDefault(require("http-status"));
+const paginationFields_1 = require("../../../shared/paginationFields");
+const pick_1 = __importDefault(require("../../../shared/pick"));
 const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
 const service_1 = require("./service");
-const pick_1 = __importDefault(require("../../../shared/pick"));
-const paginationFields_1 = require("../../../shared/paginationFields");
+// import { verifyJwt } from "../../../utils/token";
+// import ApiError from "../../../errors/apiError";
 const signUpController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = req.headers.authorization;
+    // if(token){
+    //   req.body.token = token
+    // }
     try {
-        const result = yield service_1.UserService.signUpServices(req.body);
+        const result = yield service_1.UserService.signUpServices(req.body, token);
         (0, sendResponse_1.default)(res, {
             statusCode: http_status_1.default.OK,
             success: true,
             message: "User created successfully",
-            data: result,
+            data: {},
         });
     }
     catch (error) {

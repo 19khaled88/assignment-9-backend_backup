@@ -1,16 +1,28 @@
 import { Prisma, PrismaClient, User } from "@prisma/client";
 import bcrypt from 'bcrypt';
 
+import ApiError from "../../../errors/apiError";
 import { paginationHelper } from "../../../helpers/paginationHelper";
+import { IFilters } from "../../../shared/filterType";
 import { IGenericResponse } from "../../../shared/paginationResponse";
 import { IPaginationOptions } from "../../../shared/paginationType";
-import { signJwt } from "../../../utils/token";
-import {  IUserResponse, Token, user_search_fields_constant } from "./interfaces";
-import { IFilters } from "../../../shared/filterType";
+import { signJwt, verifyJwt } from "../../../utils/token";
+import { IUserResponse, Token, user_search_fields_constant } from "./interfaces";
 const prisma = new PrismaClient()
 
 
-const signUpServices = async (data: User): Promise<IUserResponse | null> => {
+const signUpServices = async (data: User, token:string | undefined): Promise<IUserResponse | null> => {
+	
+	if(data.role === 'ADMIN' && !token){
+    	throw new ApiError(400,'Token not found or invalid token!!')
+  	}else if(data.role === 'ADMIN' && token){
+		
+		const isSuperAdmin = verifyJwt(token)
+		if(isSuperAdmin.role !== 'SUPER_ADMIN'){
+			throw new ApiError(400,'Unauthorized access!!')
+		}
+	}
+	
 	const hashedPassword = await bcrypt.hash(data.password, 12);
 	data.password = hashedPassword;
 	const result = await prisma.$transaction(async transactionClient => {
@@ -18,7 +30,8 @@ const signUpServices = async (data: User): Promise<IUserResponse | null> => {
 			data: data,
 
 		});
-		const newUser = await transactionClient.user.findFirst({
+		const newUser = await transactionClient.user.findFirst({ 
+
 			where: {
 				id: result.id
 			},

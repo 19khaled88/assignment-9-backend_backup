@@ -26,11 +26,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const client_1 = require("@prisma/client");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const apiError_1 = __importDefault(require("../../../errors/apiError"));
 const paginationHelper_1 = require("../../../helpers/paginationHelper");
 const token_1 = require("../../../utils/token");
 const interfaces_1 = require("./interfaces");
 const prisma = new client_1.PrismaClient();
-const signUpServices = (data) => __awaiter(void 0, void 0, void 0, function* () {
+const signUpServices = (data, token) => __awaiter(void 0, void 0, void 0, function* () {
+    if (data.role === 'ADMIN' && !token) {
+        throw new apiError_1.default(400, 'Token not found or invalid token!!');
+    }
+    else if (data.role === 'ADMIN' && token) {
+        const isSuperAdmin = (0, token_1.verifyJwt)(token);
+        if (isSuperAdmin.role !== 'SUPER_ADMIN') {
+            throw new apiError_1.default(400, 'Unauthorized access!!');
+        }
+    }
     const hashedPassword = yield bcrypt_1.default.hash(data.password, 12);
     data.password = hashedPassword;
     const result = yield prisma.$transaction((transactionClient) => __awaiter(void 0, void 0, void 0, function* () {

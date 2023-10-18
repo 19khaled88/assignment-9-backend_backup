@@ -9,6 +9,17 @@ type bookings = {
 	userId: string
 }
 
+export type IUserWithToken ={
+	name: string,
+	email: string,
+	role: string,
+	contactNo: string,
+	password:string,
+	token?:string,
+	address: string,
+	location: string,
+}
+
 
 export type IUserResponse = {
 	id: string,

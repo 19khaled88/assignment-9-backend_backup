@@ -2,22 +2,29 @@ import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
 
 
+import { paginationFields } from "../../../shared/paginationFields";
+import pick from "../../../shared/pick";
 import sendResponse from "../../../shared/sendResponse";
 import { UserService } from "./service";
-import pick from "../../../shared/pick";
-import { paginationFields } from "../../../shared/paginationFields";
-import { searchFields } from "./interfaces";
+// import { verifyJwt } from "../../../utils/token";
+// import ApiError from "../../../errors/apiError";
 
 
 const signUpController = async (req: Request, res: Response, next: NextFunction) => {
+  const token = req.headers.authorization
   
+  
+  // if(token){
+  //   req.body.token = token
+  // }
+ 
   try {
-    const result = await UserService.signUpServices(req.body);
+    const result = await UserService.signUpServices(req.body,token);
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: "User created successfully",
-      data: result,
+      data: {},
     });
   } catch (error) {
     next(error)

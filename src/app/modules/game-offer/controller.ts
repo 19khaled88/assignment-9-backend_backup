@@ -5,6 +5,7 @@ import httpStatus from "http-status";
 import sendResponse from "../../../shared/sendResponse";
 import { GameOfferService } from "./service";
 
+
 const createController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const result = await GameOfferService.createGameOfferService(req.body);
@@ -20,6 +21,8 @@ const createController = async (req: Request, res: Response, next: NextFunction)
 };
 
 const getAllGameOfferController = async (req: Request, res: Response) => {
+
+
   const result = await GameOfferService.getAllGameOffers();
   sendResponse(res, {
     statusCode: httpStatus.OK,
