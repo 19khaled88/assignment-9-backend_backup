@@ -161,6 +161,8 @@ const getSingleUser = async (id: string): Promise<IUserResponse | null> => {
 	return isExist;
 };
 
+
+
 const deleteUser = async (id: string): Promise<User | null> => {
 	const isDeleted = await prisma.user.delete({
 		where: {
