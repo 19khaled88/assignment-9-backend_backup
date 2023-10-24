@@ -39,7 +39,6 @@ const signUpController = (req, res, next) => __awaiter(void 0, void 0, void 0, f
     }
 });
 const signInController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.body);
     try {
         const result = yield service_1.UserService.signInServices(req.body);
         res.send({

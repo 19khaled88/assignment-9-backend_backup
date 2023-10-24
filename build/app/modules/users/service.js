@@ -80,7 +80,7 @@ const signInServices = (data) => __awaiter(void 0, void 0, void 0, function* () 
         const access_token = (0, token_1.signJwt)({ role: isExist.role, userId: isExist.id }, { expiresIn: "2h" });
         return { token: access_token };
     }
-    throw new Error('This user not found');
+    throw new Error('User sign in error');
 });
 const getAllUsers = (paginatinOptions, filterOptions) => __awaiter(void 0, void 0, void 0, function* () {
     const { searchTerm } = filterOptions, filterData = __rest(filterOptions, ["searchTerm"]);

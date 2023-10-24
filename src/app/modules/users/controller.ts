@@ -11,9 +11,7 @@ import { UserService } from "./service";
 
 
 const signUpController = async (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers.authorization
-  
-  
+  const token = req.headers.authorization  
   // if(token){
   //   req.body.token = token
   // }
@@ -32,7 +30,7 @@ const signUpController = async (req: Request, res: Response, next: NextFunction)
 };
 
 const signInController = async (req: Request, res: Response) => {
-  console.log(req.body)
+  
   try {
     const result = await UserService.signInServices(req.body);
     res.send({

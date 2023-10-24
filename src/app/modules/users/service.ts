@@ -72,7 +72,7 @@ const signInServices = async (data: Partial<User>): Promise<Token | null> => {
 		return { token: access_token };
 	}
 
-	throw new Error('This user not found')
+	throw new Error('User sign in error')
 };
 
 const getAllUsers = async (paginatinOptions: IPaginationOptions, filterOptions: IFilters): Promise<IGenericResponse<IUserResponse[]>> => {
