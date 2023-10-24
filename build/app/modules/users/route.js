@@ -18,5 +18,4 @@ router.put('/update/:id', (0, authCheck_1.default)(client_1.RoleEnumType.ADMIN, 
 router.post('/signUp', (0, authCheck_1.default)(client_1.RoleEnumType.ADMIN, client_1.RoleEnumType.SUPER_ADMIN), (0, validationMiddleware_1.default)(validation_1.UserValidation.create), controller_1.UserController.signUpController);
 router.post('/signIn', controller_1.UserController.signInController);
 router.get('/allUsers', (0, authCheck_1.default)(client_1.RoleEnumType.ADMIN, client_1.RoleEnumType.SUPER_ADMIN), controller_1.UserController.getAllUsersController);
-router.get('/email');
 exports.UserRouter = router;
