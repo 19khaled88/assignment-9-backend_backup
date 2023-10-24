@@ -8,16 +8,20 @@ import { verifyJwt } from "../../utils/token";
 
 
 const authCheck = (...requiredRoles: string[]) => async (req: Request, res: Response,next:NextFunction) => {
+    
     try {
         //get authorization token
         const token = req.headers.authorization
+        
         if (!token) {
             throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized');
         }
 
         //verify token
         let verifiedUser = null;
+        
         verifiedUser = verifyJwt(token)
+       
         req.user = verifiedUser
 
         if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {

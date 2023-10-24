@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient, User } from "@prisma/client";
+import { Prisma, PrismaClient, RoleEnumType, User } from "@prisma/client";
 import bcrypt from 'bcrypt';
 
 import ApiError from "../../../errors/apiError";
@@ -11,18 +11,18 @@ import { IUserResponse, Token, user_search_fields_constant } from "./interfaces"
 const prisma = new PrismaClient()
 
 
-const signUpServices = async (data: User, token:string | undefined): Promise<IUserResponse | null> => {
-	
-	if(data.role === 'ADMIN' && !token){
-    	throw new ApiError(400,'Token not found or invalid token!!')
-  	}else if(data.role === 'ADMIN' && token){
-		
+const signUpServices = async (data: User, token: string | undefined): Promise<IUserResponse | null> => {
+
+	if (data.role === 'ADMIN' && !token) {
+		throw new ApiError(400, 'Token not found or invalid token!!')
+	} else if (data.role === 'ADMIN' && token) {
+
 		const isSuperAdmin = verifyJwt(token)
-		if(isSuperAdmin.role !== 'SUPER_ADMIN'){
-			throw new ApiError(400,'Unauthorized access!!')
+		if (isSuperAdmin.role !== 'SUPER_ADMIN') {
+			throw new ApiError(400, 'Unauthorized access!!')
 		}
 	}
-	
+
 	const hashedPassword = await bcrypt.hash(data.password, 12);
 	data.password = hashedPassword;
 	const result = await prisma.$transaction(async transactionClient => {
@@ -30,7 +30,7 @@ const signUpServices = async (data: User, token:string | undefined): Promise<IUs
 			data: data,
 
 		});
-		const newUser = await transactionClient.user.findFirst({ 
+		const newUser = await transactionClient.user.findFirst({
 
 			where: {
 				id: result.id
@@ -174,15 +174,41 @@ const deleteUser = async (id: string): Promise<User | null> => {
 
 const updateUser = async (
 	id: string,
-	payload: Partial<User>
+	payload: Partial<User>,
+	tokenizedRole: RoleEnumType | undefined
 ): Promise<User> => {
-	const isUpdated = await prisma.user.update({
-		where: {
-			id: id,
-		},
-		data: payload,
-	});
-	return isUpdated;
+
+	const updateTransaction = await prisma.$transaction(async transactionClient => {
+		const isValidUser = await transactionClient.user.findUnique({
+			where: {
+				id: id
+			}
+		})
+
+		if (isValidUser && (isValidUser.role === RoleEnumType.ADMIN || isValidUser.role === RoleEnumType.SUPER_ADMIN)) {
+			const isUpdate = await transactionClient.user.update({
+				where: {
+					id: id
+				},
+				data: {...payload}
+			})
+			return isUpdate
+		} else {
+			const isUpdate = await transactionClient.user.update({
+				where: {
+					id:id,
+					AND:{
+						role:tokenizedRole
+					}
+				},
+				data: {...payload}
+			})
+			return isUpdate
+		}
+	})
+
+	return updateTransaction
+
 };
 
 export const UserService = {

@@ -15,5 +15,5 @@ router.delete('/delete/:id', (0, authCheck_1.default)(client_1.RoleEnumType.ADMI
 router.put('/update/:id', (0, authCheck_1.default)(client_1.RoleEnumType.ADMIN, client_1.RoleEnumType.SUPER_ADMIN), controller_1.BookingController.updateBookingController);
 router.get('/single/:id', controller_1.BookingController.getSingleBookingController);
 router.post('/create', (0, validationMiddleware_1.default)(validation_1.BookingValidation.create), controller_1.BookingController.createBookingController);
-router.get('/allBookings', (0, authCheck_1.default)(client_1.RoleEnumType.ADMIN, client_1.RoleEnumType.SUPER_ADMIN), controller_1.BookingController.getAllBookingsController);
+router.get('/allBookings', (0, authCheck_1.default)(client_1.RoleEnumType.ADMIN, client_1.RoleEnumType.SUPER_ADMIN, client_1.RoleEnumType.USER), controller_1.BookingController.getAllBookingsController);
 exports.BookingRouter = router;

@@ -164,14 +164,36 @@ const deleteUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
     });
     return isDeleted;
 });
-const updateUser = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const isUpdated = yield prisma.user.update({
-        where: {
-            id: id,
-        },
-        data: payload,
-    });
-    return isUpdated;
+const updateUser = (id, payload, tokenizedRole) => __awaiter(void 0, void 0, void 0, function* () {
+    const updateTransaction = yield prisma.$transaction((transactionClient) => __awaiter(void 0, void 0, void 0, function* () {
+        const isValidUser = yield transactionClient.user.findUnique({
+            where: {
+                id: id
+            }
+        });
+        if (isValidUser && (isValidUser.role === client_1.RoleEnumType.ADMIN || isValidUser.role === client_1.RoleEnumType.SUPER_ADMIN)) {
+            const isUpdate = yield transactionClient.user.update({
+                where: {
+                    id: id
+                },
+                data: Object.assign({}, payload)
+            });
+            return isUpdate;
+        }
+        else {
+            const isUpdate = yield transactionClient.user.update({
+                where: {
+                    id: id,
+                    AND: {
+                        role: tokenizedRole
+                    }
+                },
+                data: Object.assign({}, payload)
+            });
+            return isUpdate;
+        }
+    }));
+    return updateTransaction;
 });
 exports.UserService = {
     signUpServices,
