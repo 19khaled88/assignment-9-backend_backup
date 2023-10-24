@@ -31,7 +31,7 @@ const signUpController = (req, res, next) => __awaiter(void 0, void 0, void 0, f
             statusCode: http_status_1.default.OK,
             success: true,
             message: "User created successfully",
-            data: {},
+            data: result,
         });
     }
     catch (error) {

@@ -22,7 +22,7 @@ const signUpController = async (req: Request, res: Response, next: NextFunction)
       statusCode: httpStatus.OK,
       success: true,
       message: "User created successfully",
-      data: {},
+      data: result,
     });
   } catch (error) {
     next(error)

@@ -43,7 +43,7 @@ const signUpServices = (data, token) => __awaiter(void 0, void 0, void 0, functi
     }
     const hashedPassword = yield bcrypt_1.default.hash(data.password, 12);
     data.password = hashedPassword;
-    const result = yield prisma.$transaction((transactionClient) => __awaiter(void 0, void 0, void 0, function* () {
+    const userCreated = yield prisma.$transaction((transactionClient) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield prisma.user.create({
             data: data,
         });
@@ -63,7 +63,7 @@ const signUpServices = (data, token) => __awaiter(void 0, void 0, void 0, functi
         });
         return newUser;
     }));
-    return result;
+    return userCreated;
 });
 const signInServices = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const isExist = yield prisma.user.findFirst({

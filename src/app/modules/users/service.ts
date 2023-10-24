@@ -25,7 +25,8 @@ const signUpServices = async (data: User, token: string | undefined): Promise<IU
 
 	const hashedPassword = await bcrypt.hash(data.password, 12);
 	data.password = hashedPassword;
-	const result = await prisma.$transaction(async transactionClient => {
+	const userCreated = await prisma.$transaction(async transactionClient => {
+		
 		const result = await prisma.user.create({
 			data: data,
 
@@ -47,10 +48,11 @@ const signUpServices = async (data: User, token: string | undefined): Promise<IU
 		})
 		return newUser
 	})
-	return result;
+	return userCreated;
 };
 
 const signInServices = async (data: Partial<User>): Promise<Token | null> => {
+
 	const isExist = await prisma.user.findFirst({
 		where: {
 			email: data.email,
