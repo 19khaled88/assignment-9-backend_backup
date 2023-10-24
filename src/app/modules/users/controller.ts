@@ -32,6 +32,7 @@ const signUpController = async (req: Request, res: Response, next: NextFunction)
 };
 
 const signInController = async (req: Request, res: Response) => {
+  console.log(req.body)
   try {
     const result = await UserService.signInServices(req.body);
     res.send({
