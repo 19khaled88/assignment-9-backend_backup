@@ -86,20 +86,99 @@ const createBookingService = (data) => __awaiter(void 0, void 0, void 0, functio
     }));
     return result;
 });
-const getAllBookingService = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield prisma.booking.findMany({
-        select: {
-            id: true,
-            start_time: true,
-            end_time: true,
-            gameOfferId: true,
-            userId: true,
-            fieldId: true,
-            gameTypeId: true,
-            turfId: true
+const getAllBookingService = (role, userId) => __awaiter(void 0, void 0, void 0, function* () {
+    // const result = await prisma.booking.findMany({
+    // 	select: {
+    // 		id: true,
+    // 		start_time: true,
+    // 		end_time: true,
+    // 		gameOfferId: true,
+    // 		userId: true,
+    // 		fieldId: true,
+    // 		gameTypeId: true,
+    // 		turfId: true
+    // 	}
+    // });
+    // console.log(role,userId)
+    const fetchAllTransaction = yield prisma.$transaction((transactionClient) => __awaiter(void 0, void 0, void 0, function* () {
+        const isUser = yield transactionClient.user.findUnique({
+            where: {
+                id: userId
+            }
+        });
+        if (role === client_1.RoleEnumType.SUPER_ADMIN || role === client_1.RoleEnumType.ADMIN) {
+            const admin_SuperAdmin = yield transactionClient.booking.findMany({
+                select: {
+                    id: true,
+                    start_time: true,
+                    end_time: true,
+                    gameOfferId: true,
+                    user: {
+                        select: {
+                            name: true
+                        }
+                    },
+                    turf: {
+                        select: {
+                            name: true
+                        }
+                    },
+                    field: {
+                        select: {
+                            code: true
+                        }
+                    },
+                    gameType: {
+                        select: {
+                            name: true
+                        }
+                    },
+                    payment_status: true
+                }
+            });
+            return admin_SuperAdmin;
         }
-    });
-    return result;
+        else if (role === client_1.RoleEnumType.USER) {
+            const user = yield transactionClient.booking.findMany({
+                where: {
+                    userId: userId
+                },
+                select: {
+                    id: true,
+                    start_time: true,
+                    end_time: true,
+                    gameOfferId: true,
+                    user: {
+                        select: {
+                            name: true
+                        }
+                    },
+                    turf: {
+                        select: {
+                            name: true
+                        }
+                    },
+                    field: {
+                        select: {
+                            code: true
+                        }
+                    },
+                    gameType: {
+                        select: {
+                            name: true
+                        }
+                    },
+                    payment_status: true
+                }
+            });
+            return user;
+        }
+        // else{
+        // 	console.log({success:false})
+        // 	return {success:false}
+        // }
+    }));
+    return fetchAllTransaction;
 });
 const getSingleBookingService = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const isExist = yield prisma.booking.findFirstOrThrow({

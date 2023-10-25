@@ -25,7 +25,7 @@ const createBookingController = async (
 
 
 const getAllBookingsController = async (req: Request, res: Response) => {
-  const result = await BookingService.getAllBookingService();
+  const result = await BookingService.getAllBookingService(req?.user?.role, req?.user?.userId);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

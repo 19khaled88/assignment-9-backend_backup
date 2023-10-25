@@ -174,6 +174,7 @@ const deleteUser = async (id: string): Promise<User | null> => {
 	return isDeleted;
 };
 
+
 const updateUser = async (
 	id: string,
 	payload: Partial<User>,

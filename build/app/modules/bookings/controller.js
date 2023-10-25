@@ -31,7 +31,8 @@ const createBookingController = (req, res, next) => __awaiter(void 0, void 0, vo
     }
 });
 const getAllBookingsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield service_1.BookingService.getAllBookingService();
+    var _a, _b;
+    const result = yield service_1.BookingService.getAllBookingService((_a = req === null || req === void 0 ? void 0 : req.user) === null || _a === void 0 ? void 0 : _a.role, (_b = req === null || req === void 0 ? void 0 : req.user) === null || _b === void 0 ? void 0 : _b.userId);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,

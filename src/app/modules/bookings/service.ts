@@ -1,18 +1,18 @@
-import { Booking, PrismaClient } from "@prisma/client";
+import { Booking, PrismaClient, RoleEnumType } from "@prisma/client";
 import ApiError from "../../../errors/apiError";
-import { IBookingResponse } from "./interfaces";
+import { IAllBookingResponse, IBookingResponse } from "./interfaces";
 // import ApiError from "../../../errors/apiError";
 const prisma = new PrismaClient()
 
 
 const createBookingService = async (data: Booking): Promise<IBookingResponse | null> => {
 	const result = await prisma.$transaction(async transactionClient => {
-		const isUserExist =await transactionClient.user.findFirst({
-			where:{
-				id:data.userId
+		const isUserExist = await transactionClient.user.findFirst({
+			where: {
+				id: data.userId
 			}
 		})
-		if(!isUserExist){
+		if (!isUserExist) {
 			throw new ApiError(400, 'This user not exist!')
 		}
 		const offeredGame = await transactionClient.gameOffer.findFirst({
@@ -69,7 +69,7 @@ const createBookingService = async (data: Booking): Promise<IBookingResponse | n
 				fieldId: true,
 				gameTypeId: true,
 				turfId: true,
-				payment_status:true
+				payment_status: true
 			}
 		})
 		return newGameOffer
@@ -77,20 +77,106 @@ const createBookingService = async (data: Booking): Promise<IBookingResponse | n
 	return result;
 };
 
-const getAllBookingService = async (): Promise<IBookingResponse[]> => {
-	const result = await prisma.booking.findMany({
-		select: {
-			id: true,
-			start_time: true,
-			end_time: true,
-			gameOfferId: true,
-			userId: true,
-			fieldId: true,
-			gameTypeId: true,
-			turfId: true
+const getAllBookingService = async (role: string, userId: string): Promise<IAllBookingResponse[] | undefined> => {
+
+	// const result = await prisma.booking.findMany({
+	// 	select: {
+	// 		id: true,
+	// 		start_time: true,
+	// 		end_time: true,
+	// 		gameOfferId: true,
+	// 		userId: true,
+	// 		fieldId: true,
+	// 		gameTypeId: true,
+	// 		turfId: true
+	// 	}
+	// });
+	// console.log(role,userId)
+
+	const fetchAllTransaction = await prisma.$transaction(async transactionClient => {
+		const isUser = await transactionClient.user.findUnique({
+			where: {
+				id: userId
+			}
+		})
+		if (role === RoleEnumType.SUPER_ADMIN || role === RoleEnumType.ADMIN) {
+			const admin_SuperAdmin = await transactionClient.booking.findMany({
+				select: {
+					id: true,
+					start_time: true,
+					end_time: true,
+					gameOfferId: true,
+					user: {
+						select: {
+							name: true
+						}
+					},
+					turf: {
+						select: {
+							name: true
+						}
+					},
+					field: {
+						select: {
+							code: true
+						}
+					},
+					gameType: {
+						select: {
+							name: true
+						}
+					},
+
+					payment_status: true
+				}
+			});
+			return admin_SuperAdmin
+		} else if (role === RoleEnumType.USER) {
+			const user = await transactionClient.booking.findMany({
+				where: {
+					userId: userId
+				},
+
+				select: {
+					id: true,
+					start_time: true,
+					end_time: true,
+					gameOfferId: true,
+
+					user: {
+						select: {
+							name: true
+						}
+					},
+					turf: {
+						select: {
+							name: true
+						}
+					},
+					field: {
+						select: {
+							code: true
+						}
+					},
+					gameType: {
+						select: {
+							name: true
+						}
+					},
+
+					payment_status: true
+				}
+			});
+			return user
 		}
-	});
-	return result;
+
+		// else{
+		// 	console.log({success:false})
+		// 	return {success:false}
+		// }
+	})
+
+	return fetchAllTransaction;
 };
 
 const getSingleBookingService = async (id: string): Promise<IBookingResponse | null> => {
