@@ -98,15 +98,10 @@ const getAllGameOffers = async (): Promise<IGameOfferesponse[]> => {
 					gameOfferId: true,
 					fieldId: true,
 					userId: true
-
 				}
 			},
-			
-		},
-		
-		
+		},		
 	});
-	
 	return result;
 };
 
