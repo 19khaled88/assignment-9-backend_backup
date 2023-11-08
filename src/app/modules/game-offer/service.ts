@@ -62,7 +62,7 @@ const createGameOfferService = async (data: GameOffer): Promise<ISingleGameOffer
 };
 
 
-const getAllGameOffers = async (): Promise<IGameOfferesponse[]> => {
+const getAllGameOffers = async (): Promise<any> => {
 	const response = await prisma.$transaction(async transactionClient =>{
 		const result = await transactionClient.gameOffer.findMany({
 			select: {
@@ -104,15 +104,8 @@ const getAllGameOffers = async (): Promise<IGameOfferesponse[]> => {
 				
 		});
 
-		const result1= await transactionClient.gameOffer.findMany({
-			include:{
-				turf:true,
-				gameType:true,
-				field:true,
-				bookings:true
-			}
-		});
-		return result1
+		
+		return result
 	})
 	return response;
 };
