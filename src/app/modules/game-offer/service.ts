@@ -100,41 +100,16 @@ const getAllGameOffers = async (): Promise<IGameOfferesponse[]> => {
 						userId: true
 					}
 				},
-			},		
+			},	
+				
 		});
 
 		const result1= await transactionClient.gameOffer.findMany({
 			include:{
-				
-				turf:{
-					select:{
-						name:true,
-						location:true,
-						owner:true
-					}
-				},
-				gameType:{
-					select: {
-						name: true,
-						numberOfPalyers: true
-					}
-				},
-				field:{
-					select: {
-						code: true,
-						size: true
-					}
-				},
-				bookings:{
-					select: {
-						start_time: true,
-						end_time: true,
-						turfId: true,
-						gameOfferId: true,
-						fieldId: true,
-						userId: true
-					}
-				}
+				turf:true,
+				gameType:true,
+				field:true,
+				bookings:true
 			}
 		});
 		return result1
