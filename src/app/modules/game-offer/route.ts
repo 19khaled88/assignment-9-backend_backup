@@ -1,9 +1,9 @@
+import { RoleEnumType } from '@prisma/client'
 import express from 'express'
+import authCheck from '../../middleware/authCheck'
 import validateRequest from '../../middleware/validationMiddleware'
 import { GameOfferController } from './controller'
 import { GameOfferValidation } from './validation'
-import authCheck from '../../middleware/authCheck'
-import { RoleEnumType } from '@prisma/client'
 
 
 const router = express.Router()

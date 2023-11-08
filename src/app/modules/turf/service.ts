@@ -1,11 +1,11 @@
 import { Prisma, PrismaClient, Turf } from "@prisma/client";
 import ApiError from "../../../errors/apiError";
-import { ITurfResponse, turf_search_fields_constant } from "./interfaces";
 import { IPaginationOptions } from "../../../shared/paginationType";
+import { ITurfResponse, turf_search_fields_constant } from "./interfaces";
 
 import { paginationHelper } from "../../../helpers/paginationHelper";
-import { IGenericResponse } from "../../../shared/paginationResponse";
 import { IFilters } from "../../../shared/filterType";
+import { IGenericResponse } from "../../../shared/paginationResponse";
 const prisma = new PrismaClient()
 
 

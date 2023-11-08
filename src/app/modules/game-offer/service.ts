@@ -6,8 +6,8 @@ const prisma = new PrismaClient()
 
 const createGameOfferService = async (data: GameOffer): Promise<IGameOfferesponse | null> => {
 	const result = await prisma.$transaction(async transactionClient => {
-		const isValid =await transactionClient.turf.findFirst({
-			where:{
+		const isValid = await transactionClient.turf.findFirst({
+			where: {
 				AND: [
 					{ id: data.turfId },
 					{
@@ -20,19 +20,19 @@ const createGameOfferService = async (data: GameOffer): Promise<IGameOfferespons
 				],
 			}
 		})
-		if(!isValid){
+		if (!isValid) {
 			throw new ApiError(400, 'No field to the given turf registered yet!')
 		}
 		const isExist = await transactionClient.gameOffer.findFirst({
 			where: {
-				AND:[
+				AND: [
 					{
-						turfId:data.turfId
-					},{
-						gameTypeId:data.gameTypeId
+						turfId: data.turfId
+					}, {
+						gameTypeId: data.gameTypeId
 					},
 					{
-						fieldId:data.fieldId
+						fieldId: data.fieldId
 					}
 				]
 			}
@@ -53,7 +53,7 @@ const createGameOfferService = async (data: GameOffer): Promise<IGameOfferespons
 				turfId: true,
 				gameTypeId: true,
 				fieldId: true,
-				bookings:true
+				bookings: true
 			}
 		})
 		return newGameOffer
@@ -68,12 +68,45 @@ const getAllGameOffers = async (): Promise<IGameOfferesponse[]> => {
 		select: {
 			id: true,
 			price_per_hour: true,
+			turf: {
+				select: {
+					name: true,
+					location: true,
+					owner: true
+				}
+			},
 			turfId: true,
 			gameTypeId: true,
+			gameType: {
+				select: {
+					name: true,
+					numberOfPalyers: true
+				}
+			},
 			fieldId: true,
-			bookings: true
+			field: {
+				select: {
+					code: true,
+					size: true
+				}
+			},
+			bookings: {
+				select: {
+					start_time: true,
+					end_time: true,
+					turfId: true,
+					gameOfferId: true,
+					fieldId: true,
+					userId: true
+
+				}
+			},
+			
 		},
+		
+		
 	});
+	
 	return result;
 };
 

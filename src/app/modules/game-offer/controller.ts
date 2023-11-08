@@ -21,8 +21,6 @@ const createController = async (req: Request, res: Response, next: NextFunction)
 };
 
 const getAllGameOfferController = async (req: Request, res: Response) => {
-
-
   const result = await GameOfferService.getAllGameOffers();
   sendResponse(res, {
     statusCode: httpStatus.OK,
