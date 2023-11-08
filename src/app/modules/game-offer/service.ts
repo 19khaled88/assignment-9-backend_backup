@@ -1,10 +1,10 @@
 import { GameOffer, PrismaClient } from "@prisma/client";
 import ApiError from "../../../errors/apiError";
-import { IGameOfferesponse } from "./interfaces";
+import { IGameOfferesponse, ISingleGameOfferesponse } from "./interfaces";
 const prisma = new PrismaClient()
 
 
-const createGameOfferService = async (data: GameOffer): Promise<IGameOfferesponse | null> => {
+const createGameOfferService = async (data: GameOffer): Promise<ISingleGameOfferesponse | null> => {
 	const result = await prisma.$transaction(async transactionClient => {
 		const isValid = await transactionClient.turf.findFirst({
 			where: {
@@ -105,7 +105,7 @@ const getAllGameOffers = async (): Promise<IGameOfferesponse[]> => {
 	return result;
 };
 
-const getSingleGameOffer = async (id: string): Promise<IGameOfferesponse | null> => {
+const getSingleGameOffer = async (id: string): Promise<ISingleGameOfferesponse | null> => {
 	const isExist = await prisma.gameOffer.findFirstOrThrow({
 		where: {
 			id: id,

@@ -21,7 +21,7 @@ type ITurf = {
 	owner: string
 }
 
-export type IGameOfferesponse = {
+export type ISingleGameOfferesponse = {
 	id?:string,
 	price_per_hour: number,
 	turfId: string,
@@ -32,6 +32,30 @@ export type IGameOfferesponse = {
 	field?: IField,
 	// bookings?: IBooking[]
 }
+export type IGameOfferesponse = {
+	id:string,
+	price_per_hour: number,
+	turfId: string,
+	turf:ITurf,
+	gameTypeId: string,
+	gameType: IGameType,
+	fieldId: string,
+	field: IField,
+	// bookings?: IBooking[]
+}
+
+
+// export type IGameOfferesponse = {
+// 	id?:string,
+// 	price_per_hour: number,
+// 	turfId: string,
+// 	turf?:ITurf,
+// 	gameTypeId: string,
+// 	gameType?: IGameType,
+// 	fieldId: string,
+// 	field?: IField,
+// 	// bookings?: IBooking[]
+// }
 
 
 
