@@ -41,7 +41,7 @@ export type IGameOfferesponse = {
 	gameType: IGameType,
 	fieldId: string,
 	field: IField,
-	// bookings?: IBooking[]
+	bookings?: IBooking[]
 }
 
 

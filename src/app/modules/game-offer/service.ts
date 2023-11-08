@@ -63,46 +63,48 @@ const createGameOfferService = async (data: GameOffer): Promise<ISingleGameOffer
 
 
 const getAllGameOffers = async (): Promise<IGameOfferesponse[]> => {
-
-	const result = await prisma.gameOffer.findMany({
-		select: {
-			id: true,
-			price_per_hour: true,
-			turf: {
-				select: {
-					name: true,
-					location: true,
-					owner: true
-				}
-			},
-			turfId: true,
-			gameTypeId: true,
-			gameType: {
-				select: {
-					name: true,
-					numberOfPalyers: true
-				}
-			},
-			fieldId: true,
-			field: {
-				select: {
-					code: true,
-					size: true
-				}
-			},
-			bookings: {
-				select: {
-					start_time: true,
-					end_time: true,
-					turfId: true,
-					gameOfferId: true,
-					fieldId: true,
-					userId: true
-				}
-			},
-		},		
-	});
-	return result;
+	const response = await prisma.$transaction(async transactionClient =>{
+		const result = await transactionClient.gameOffer.findMany({
+			select: {
+				id: true,
+				price_per_hour: true,
+				turf: {
+					select:{
+						name:true,
+						location:true,
+						owner:true
+					}
+				},
+				turfId: true,
+				gameTypeId: true,
+				gameType: {
+					select: {
+						name: true,
+						numberOfPalyers: true
+					}
+				},
+				fieldId: true,
+				field: {
+					select: {
+						code: true,
+						size: true
+					}
+				},
+				bookings: {
+					select: {
+						start_time: true,
+						end_time: true,
+						turfId: true,
+						gameOfferId: true,
+						fieldId: true,
+						userId: true
+					}
+				},
+			},		
+		});
+		return result
+	})
+	return response;
 };
 
 const getSingleGameOffer = async (id: string): Promise<ISingleGameOfferesponse | null> => {
