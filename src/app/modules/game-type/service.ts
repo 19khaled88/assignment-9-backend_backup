@@ -85,7 +85,6 @@ const getAllGameType = async (paginatinOptions:IPaginationOptions,filterOptions:
 			AND: Object.keys(filterData).map((key) => ({
 				[key]: {
 					equals: key === 'numberOfPalyers' ? parseInt((filterData as any)[key]) : (filterData as any)[key],
-					
 				}
 			}))
 		})
