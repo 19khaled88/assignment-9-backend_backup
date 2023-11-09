@@ -5,12 +5,7 @@ import globalErrorHandler from './app/middleware/globalErrorHandler'
 import userRoutes from './app/routes/index'
 
 const app: Application = express()
-const corsOptions = {
-  origin: '*',
-  credentials: true,
-  optionSuccessStatus: 200,
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-}
+const corsOptions = { origin: '*'}
 
 
 //middlwares
