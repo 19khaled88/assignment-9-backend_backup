@@ -8,6 +8,8 @@ import { IGameTypeResponse, game_type_search_fields_constant } from "./interface
 const prisma = new PrismaClient()
 
 
+const field = 'numberOfPalyers' as string
+
 const createGameTypeService = async (data: GameType): Promise<IGameTypeResponse | null> => {
 	const result = await prisma.$transaction(async transactionClient => {
 		const isExist = await transactionClient.gameType.findFirst({
@@ -40,6 +42,16 @@ const getAllGameType = async (paginatinOptions:IPaginationOptions,filterOptions:
 	const { searchTerm, ...filterData } = filterOptions
 	const { limit, page, skip } = paginationHelper.calculatePagination(paginatinOptions)
 
+
+	// if(Object.keys(filterData)[0] === 'numberOfPalyers' && typeof Object.values(filterData)[0] === 'string'){
+		
+	//     //  filterData['numberOfPalyers'] =	
+	// 	//  Number(Object.values(filterData)[0])
+	// 	type T =  keyof typeof filterData
+	// 	Number(filterData[field as keyof typeof filterData])
+	// 	console.log(Number(filterData[field as keyof typeof filterData]), T)
+	// }
+
 	let andConditions = []
 
 	//searching code
@@ -58,15 +70,28 @@ const getAllGameType = async (paginatinOptions:IPaginationOptions,filterOptions:
 
 
 	//filtering code
+	// if (Object.keys(filterData).length > 0) {
+	// 	andConditions.push({
+	// 		AND: Object.keys(filterData).map((key) => ({
+	// 			[key]: {
+	// 				equals: (filterData as any)[key],
+	// 				mode: 'insensitive'
+	// 			}
+	// 		}))
+	// 	})
+	// }
 	if (Object.keys(filterData).length > 0) {
 		andConditions.push({
 			AND: Object.keys(filterData).map((key) => ({
 				[key]: {
-					equals: (filterData as any)[key]
+					equals: key === 'numberOfPalyers' ? parseInt((filterData as any)[key]) : (filterData as any)[key],
+					
 				}
 			}))
 		})
 	}
+
+	
 
 	const whereCondition: Prisma.GameTypeWhereInput = andConditions.length > 0 ? { AND: andConditions } : {}
 

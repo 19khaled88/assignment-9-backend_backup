@@ -42,9 +42,10 @@ const createTurfService = async (data: Turf): Promise<ITurfResponse | null> => {
 
 const getAllTurfs = async (paginatinOptions:IPaginationOptions,filterOptions:IFilters): Promise<IGenericResponse<ITurfResponse[]>> => {
 
+	
 	const {searchTerm, ...filterData} = filterOptions
 	const {limit,page,skip} = paginationHelper.calculatePagination(paginatinOptions)
-
+    
 	let andConditions = []
 
 	//searching code
@@ -103,6 +104,7 @@ const getAllTurfs = async (paginatinOptions:IPaginationOptions,filterOptions:IFi
 		data:result
 	}
 };
+
 
 const getSingleTurf = async (id: string): Promise<ITurfResponse | null> => {
 	const isExist = await prisma.turf.findFirst({
