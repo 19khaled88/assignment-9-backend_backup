@@ -35,14 +35,18 @@ const getAllTurfsController = async (req: Request, res: Response) => {
   });
 };
 
-const getSingleTurfController = async (req: Request, res: Response) => {
-  const result = await TurfService.getSingleTurf(req.params.id);
+const getSingleTurfController = async (req: Request, res: Response,next:NextFunction) => {
+  try {
+    const result = await TurfService.getSingleTurf(req.params.id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Turf fetched successfully",
     data: result,
   });
+  } catch (error) {
+    next(error)
+  }
 };
 
 const updateTurfController = async (req: Request, res: Response) => {
