@@ -12,6 +12,7 @@ const createBookingService = async (data: Booking): Promise<IBookingResponse | n
 				id: data.userId
 			}
 		})
+		
 		if (!isUserExist) {
 			throw new ApiError(400, 'This user not exist!')
 		}
@@ -20,7 +21,7 @@ const createBookingService = async (data: Booking): Promise<IBookingResponse | n
 				id: data.gameOfferId
 			}
 		})
-
+		console.log(offeredGame)
 		const isExist = await transactionClient.booking.findFirst({
 			where: {
 				AND: [
@@ -35,9 +36,9 @@ const createBookingService = async (data: Booking): Promise<IBookingResponse | n
 					{
 						gameOfferId: offeredGame?.id
 					},
-					{
-						userId: data.userId
-					},
+					// {
+					// 	userId: data.userId
+					// },
 					{
 						turfId: offeredGame?.turfId
 					},
