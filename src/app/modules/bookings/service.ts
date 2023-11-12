@@ -33,9 +33,9 @@ const createBookingService = async (data: Booking): Promise<IBookingResponse | n
 							gt: data.start_time
 						}
 					},
-					{
-						gameOfferId: offeredGame?.id
-					},
+					// {
+					// 	gameOfferId: offeredGame?.id
+					// },
 					// {
 					// 	userId: data.userId
 					// },
@@ -45,9 +45,9 @@ const createBookingService = async (data: Booking): Promise<IBookingResponse | n
 					{
 						fieldId: offeredGame?.fieldId
 					},
-					{
-						gameTypeId: offeredGame?.gameTypeId
-					}
+					// {
+					// 	gameTypeId: offeredGame?.gameTypeId
+					// }
 				]
 			}
 		})
