@@ -28,7 +28,6 @@ const authCheck = (...requiredRoles: string[]) => async (req: Request, res: Resp
             throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
         }
         
-        
         next()
     } catch (error) {
         

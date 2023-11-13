@@ -33,21 +33,14 @@ const createBookingService = async (data: Booking): Promise<IBookingResponse | n
 							gt: data.start_time
 						}
 					},
-					// {
-					// 	gameOfferId: offeredGame?.id
-					// },
-					// {
-					// 	userId: data.userId
-					// },
+					
 					{
 						turfId: offeredGame?.turfId
 					},
 					{
 						fieldId: offeredGame?.fieldId
 					},
-					// {
-					// 	gameTypeId: offeredGame?.gameTypeId
-					// }
+					
 				]
 			}
 		})

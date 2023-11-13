@@ -8,7 +8,7 @@ import pick from "../../../shared/pick";
 import { paginationFields } from "../../../shared/paginationFields";
 
 const createController = async (req: Request, res: Response, next: NextFunction) => {
-  
+
   try {
     const result = await TurfService.createTurfService(req.body);
     sendResponse(res, {
@@ -23,10 +23,10 @@ const createController = async (req: Request, res: Response, next: NextFunction)
 };
 
 const getAllTurfsController = async (req: Request, res: Response) => {
-  
-  const filterOptions = pick(req.query,['name','location','owner'])
+
+  const filterOptions = pick(req.query, ['name', 'location', 'owner'])
   const paginationOptions = pick(req.query, paginationFields)
-  const result = await TurfService.getAllTurfs(paginationOptions,filterOptions);
+  const result = await TurfService.getAllTurfs(paginationOptions, filterOptions);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -35,15 +35,15 @@ const getAllTurfsController = async (req: Request, res: Response) => {
   });
 };
 
-const getSingleTurfController = async (req: Request, res: Response,next:NextFunction) => {
+const getSingleTurfController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const result = await TurfService.getSingleTurf(req.params.id);
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "Turf fetched successfully",
-    data: result,
-  });
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Turf fetched successfully",
+      data: result,
+    });
   } catch (error) {
     next(error)
   }
@@ -59,14 +59,19 @@ const updateTurfController = async (req: Request, res: Response) => {
   });
 };
 
-const deleteTurfControler = async (req: Request, res: Response) => {
-  const isDeleted = await TurfService.deleteTurf(req.params.id);
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "Turf deleted successfully",
-    data: isDeleted,
-  });
+const deleteTurfControler = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const isDeleted = await TurfService.deleteTurf(req.params.id);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Turf deleted successfully",
+      data: isDeleted,
+    });
+  } catch (error) {
+    next(error)
+  }
+
 };
 
 export const TurfController = {
