@@ -6,26 +6,27 @@ const prisma = new PrismaClient()
 
 const createFieldService = async (data: Field): Promise<IFieldResponse | null> => {
 	const result = await prisma.$transaction(async transactionClient => {
-		const ifTrufExist =await transactionClient.turf.findFirst({
-			where:{
-				id:data.turfId
+		const ifTrufExist = await transactionClient.turf.findFirst({
+			where: {
+				id: data.turfId
 			}
 		})
-		if(!ifTrufExist){
+		if (!ifTrufExist) {
 			throw new ApiError(400, 'This turf does not exist!!')
 		}
 		const isExist = await transactionClient.field.findFirst({
 			where: {
-				AND:[
+				AND: [
 					{
 						code: data.code
 					},
 					{
-						turfId:data.turfId
+						turfId: data.turfId
 					}
 				]
 			}
 		})
+
 		if (isExist) {
 			throw new ApiError(400, 'A field with this code already created')
 		}
@@ -57,7 +58,7 @@ const getAllFields = async (): Promise<IFieldResponse[]> => {
 			size: true,
 			turfId: true,
 			gameOffers: true,
-			bookings:true
+			bookings: true
 		},
 	});
 	return result;
@@ -74,7 +75,7 @@ const getSingleField = async (id: string): Promise<IFieldResponse | null> => {
 			turfId: true,
 			size: true,
 			gameOffers: true,
-			bookings:true
+			bookings: true
 		}
 	});
 	return isExist;
@@ -86,6 +87,7 @@ const deleteField = async (id: string): Promise<Field | null> => {
 			id: id,
 		},
 	});
+
 	return isDeleted;
 };
 
@@ -93,13 +95,35 @@ const updateField = async (
 	id: string,
 	payload: Partial<Field>
 ): Promise<Field> => {
-	const isUpdated = await prisma.field.update({
-		where: {
-			id: id,
-		},
-		data: payload,
-	});
-	return isUpdated;
+	const transectionResponse = await prisma.$transaction(async transactionClient =>{
+		const isExist = await transactionClient.field.findFirst({
+			where: {
+				AND: [
+					{
+						code: payload.code
+					},
+					{
+						turfId: payload.turfId
+					}
+				]
+			}
+		})
+
+		if (isExist) {
+			throw new ApiError(400, 'Opps! field with this code already exist')
+		}
+		const isUpdated = await prisma.field.update({
+			where: {
+				id: id,
+			},
+			data: payload,
+		});
+
+		return isUpdated;
+
+	})
+	
+	return transectionResponse;
 };
 
 export const FieldService = {

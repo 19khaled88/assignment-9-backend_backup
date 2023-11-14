@@ -19,44 +19,72 @@ const createController = async (req: Request, res: Response, next: NextFunction)
   }
 };
 
-const getAllFieldController = async (req: Request, res: Response) => {
-  const result = await FieldService.getAllFields();
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "Fields retrieved successfully",
-    data: result,
-  });
+const getAllFieldController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const result = await FieldService.getAllFields();
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Fields retrieved successfully",
+      data: result,
+    });
+    // res.send({
+    //   statusCode: 200,
+    //   success: true,
+    //   message: "Fields retrieved successfully",
+    //   result,
+    // })
+  } catch (error) {
+    next(error)
+  }
 };
 
-const getSingleFieldController = async (req: Request, res: Response) => {
-  const result = await FieldService.getSingleField(req.params.id);
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "Field fetched successfully",
-    data: result,
-  });
+const getSingleFieldController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const result = await FieldService.getSingleField(req.params.id);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Field fetched successfully",
+      data: result,
+    });
+  } catch (error) {
+    next(error)
+  }
 };
 
-const updateFieldController = async (req: Request, res: Response) => {
-  const isUpdate = await FieldService.updateField(req.params.id, req.body);
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "Field for given ID updated successfully",
-    data: isUpdate,
-  });
+const updateFieldController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const isUpdate = await FieldService.updateField(req.params.id, req.body);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Field for given ID updated successfully",
+      data: isUpdate,
+    });
+  } catch (error) {
+    next(error)
+  }
 };
 
-const deleteFieldController = async (req: Request, res: Response) => {
-  const isDeleted = await FieldService.deleteField(req.params.id);
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "Field for given Id deleted successfully",
-    data: isDeleted,
-  });
+const deleteFieldController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const isDeleted = await FieldService.deleteField(req.params.id);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Field for given Id deleted successfully",
+      data: isDeleted,
+    });
+    // res.send({
+    //   statusCode: 200,
+    //   success: true,
+    //   message: "Field for given Id deleted successfully",
+    //   isDeleted,
+    // })
+  } catch (error) {
+    next(error)
+  }
 };
 
 export const FieldController = {
