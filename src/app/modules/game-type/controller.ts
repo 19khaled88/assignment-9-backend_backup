@@ -74,7 +74,7 @@ const deleteGameTypeControler = async (req: Request, res: Response, next: NextFu
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "Turf deleted successfully",
+      message: "Game type deleted successfully",
       data: isDeleted,
     });
   } catch (error) {
