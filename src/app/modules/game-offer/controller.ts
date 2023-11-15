@@ -54,7 +54,7 @@ const updateGameOfferController = async (req: Request, res: Response, next: Next
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "Offered game for given ID updated successfully",
+      message: "Offered game updated successfully",
       data: isUpdate,
     });
   } catch (error) {
@@ -68,7 +68,7 @@ const deleteGameOfferController = async (req: Request, res: Response, next: Next
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "Offered game for given Id deleted successfully",
+      message: "Offered game deleted successfully",
       data: isDeleted,
     });
   } catch (error) {

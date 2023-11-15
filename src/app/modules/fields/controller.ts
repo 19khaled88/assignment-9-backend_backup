@@ -53,6 +53,20 @@ const getSingleFieldController = async (req: Request, res: Response, next: NextF
   }
 };
 
+const singleFieldByTurfId =async(req: Request, res: Response, next: NextFunction)=>{
+  try {
+    const result = await FieldService.singleFieldByTurfId(req.params.turfId);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Field for given turf id fetched successfully",
+      data: result,
+    });
+  } catch (error) {
+    next(error)
+  }
+}
+
 const updateFieldController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const isUpdate = await FieldService.updateField(req.params.id, req.body);
@@ -92,5 +106,6 @@ export const FieldController = {
   getAllFieldController,
   getSingleFieldController,
   updateFieldController,
-  deleteFieldController
+  deleteFieldController,
+  singleFieldByTurfId
 };

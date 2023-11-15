@@ -81,6 +81,23 @@ const getSingleField = async (id: string): Promise<IFieldResponse | null> => {
 	return isExist;
 };
 
+const singleFieldByTurfId = async (id: string): Promise<IFieldResponse | null> => {
+	const isExist = await prisma.field.findFirstOrThrow({
+		where: {
+			turfId: id,
+		},
+		select: {
+			id: true,
+			code: true,
+			turfId: true,
+			size: true,
+			gameOffers: true,
+			bookings: true
+		}
+	});
+	return isExist;
+};
+
 const deleteField = async (id: string): Promise<Field | null> => {
 	const isDeleted = await prisma.field.delete({
 		where: {
@@ -131,6 +148,6 @@ export const FieldService = {
 	getAllFields,
 	getSingleField,
 	updateField,
-	deleteField
-
+	deleteField,
+	singleFieldByTurfId
 }
