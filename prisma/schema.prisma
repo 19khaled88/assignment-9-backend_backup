@@ -34,7 +34,7 @@ model Turf {
   name       String
   location   String
   owner      String
-  image      String
+  imgurl     String
   createAt   DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
   gameOffers GameOffer[]
@@ -47,7 +47,7 @@ model Turf {
 model GameType {
   id              String      @id @default(uuid())
   name            String
-  image           String
+  imgurl          String
   numberOfPalyers Int
   GameOffers      GameOffer[]
   createAt        DateTime    @default(now())
