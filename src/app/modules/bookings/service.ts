@@ -12,7 +12,7 @@ const createBookingService = async (data: Booking): Promise<IBookingResponse | n
 				id: data.userId
 			}
 		})
-		
+
 		if (!isUserExist) {
 			throw new ApiError(400, 'This user not exist!')
 		}
@@ -33,14 +33,14 @@ const createBookingService = async (data: Booking): Promise<IBookingResponse | n
 							gt: data.start_time
 						}
 					},
-					
+
 					{
 						turfId: offeredGame?.turfId
 					},
 					{
 						fieldId: offeredGame?.fieldId
 					},
-					
+
 				]
 			}
 		})
@@ -192,13 +192,53 @@ const getSingleBookingService = async (id: string): Promise<IBookingResponse | n
 	return isExist;
 };
 
-const deleteBookingService = async (id: string): Promise<Booking | null> => {
-	const isDeleted = await prisma.booking.delete({
+const getBookingsByUserIdSerivce = async (userId: string) => {
+	const result = await prisma.booking.findMany({
 		where: {
-			id: id,
-		},
-	});
-	return isDeleted;
+			userId: userId
+		}
+	})
+	return result
+}
+
+const deleteBookingService = async (id: string, userId: string, role: string): Promise<Booking | null> => {
+	const response = await prisma.$transaction(async transactionClient => {
+		const isUser = await transactionClient.booking.findFirst({
+			where: {
+				userId: userId
+			}
+		})
+
+		if (role === 'USER' && isUser === null) {
+			throw new ApiError(400, 'This user not authorized!')
+		}
+		if (role === 'USER') {
+			const isDeleted = await transactionClient.booking.delete({
+				where: {
+					id: id,
+					userId: userId
+				}
+			})
+			return isDeleted
+		}
+		// if(role === 'ADMIN' || role === 'SUPER_ADMIN'){
+
+		// }
+		const isDeleted = await transactionClient.booking.delete({
+			where: {
+				id: id
+			}
+		})
+		return isDeleted
+	})
+
+	// const isDeleted = await prisma.booking.delete({
+	// 	where: {
+	// 		id: id,
+	// 	},
+	// });
+	// return isDeleted;
+	return response
 };
 
 const updateBookingService = async (
@@ -218,6 +258,7 @@ export const BookingService = {
 	createBookingService,
 	getAllBookingService,
 	getSingleBookingService,
+	getBookingsByUserIdSerivce,
 	deleteBookingService,
 	updateBookingService
 }

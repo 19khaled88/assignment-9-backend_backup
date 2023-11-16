@@ -12,7 +12,7 @@ const authCheck = (...requiredRoles: string[]) => async (req: Request, res: Resp
     try {
         //get authorization token
         const token = req.headers.authorization
-       
+        
         if (!token) {
             throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized');
         }

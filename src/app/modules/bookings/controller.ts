@@ -24,15 +24,18 @@ const createBookingController = async (
 
 
 
-const getAllBookingsController = async (req: Request, res: Response) => {
-  
-  const result = await BookingService.getAllBookingService(req?.user?.role, req?.user?.userId);
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "All bookings retrieved successfully",
-    data: result,
-  });
+const getAllBookingsController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const result = await BookingService.getAllBookingService(req?.user?.role, req?.user?.userId);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "All bookings retrieved successfully",
+      data: result,
+    });
+  } catch (error) {
+    next(error)
+  }
 };
 
 const getSingleBookingController = async (req: Request, res: Response) => {
@@ -45,27 +48,35 @@ const getSingleBookingController = async (req: Request, res: Response) => {
   });
 };
 
-const updateBookingController = async (req: Request, res: Response) => {
-  const isUpdate = await BookingService.updateBookingService(
-    req.params.id,
-    req.body
-  );
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "Booking for given ID updated successfully",
-    data: isUpdate,
-  });
+const updateBookingController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const isUpdate = await BookingService.updateBookingService(
+      req.params.id,
+      req.body
+    );
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Booking updated successfully",
+      data: isUpdate,
+    });
+  } catch (error) {
+    next(error)
+  }
 };
 
-const deleteBookingController = async (req: Request, res: Response) => {
-  const isDeleted = await BookingService.deleteBookingService(req.params.id);
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "Booking for given Id deleted successfully",
-    data: isDeleted,
-  });
+const deleteBookingController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const isDeleted = await BookingService.deleteBookingService(req.params.id,req?.user?.userId,req?.user?.role);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Booking deleted successfully",
+      data: isDeleted,
+    });
+  } catch (error) {
+    next(error)
+  }
 };
 
 export const BookingController = {
