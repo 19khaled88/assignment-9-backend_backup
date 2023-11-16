@@ -32,7 +32,7 @@ const createTurfService = async (data: Turf): Promise<ITurfResponse | null> => {
 			select: {
 				name: true,
 				owner: true,
-				image:true,
+				imgurl:true,
 				location: true
 			}
 		})
@@ -89,7 +89,7 @@ const getAllTurfs = async (paginatinOptions:IPaginationOptions,filterOptions:IFi
 			name: true,
 			location: true,
 			owner: true,
-			image:true,
+			imgurl:true,
 			gameOffers:true,
 			fields:true,
 			bookings:true
@@ -118,7 +118,7 @@ const getSingleTurf = async (id: string): Promise<ITurfResponse | null> => {
 			name: true,
 			location: true,
 			owner: true,
-			image:true,
+			imgurl:true,
 			gameOffers:true,
 			fields:true,
 			bookings:true

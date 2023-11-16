@@ -17,7 +17,7 @@ type bookings ={
 export type IGameTypeResponse = {
 	name: string,
 	numberOfPalyers: number,
-	image:string,
+	imgurl:string,
 	GameOffers?:gameOffer[],
 	bookings?:bookings[]
 }

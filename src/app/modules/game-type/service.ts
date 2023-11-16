@@ -30,7 +30,7 @@ const createGameTypeService = async (data: GameType): Promise<IGameTypeResponse 
 			},
 			select: {
 				name: true,
-				image:true,
+				imgurl:true,
 				numberOfPalyers: true
 			}
 		})
@@ -105,7 +105,7 @@ const getAllGameType = async (paginatinOptions:IPaginationOptions,filterOptions:
 		select: {
 			id: true,
 			name: true,
-			image:true,
+			imgurl:true,
 			numberOfPalyers: true,
 			bookings:true,
 			GameOffers:true
@@ -132,7 +132,7 @@ const getSingleGameType = async (id: string): Promise<IGameTypeResponse | null> 
 		select: {
 			id: true,
 			name: true,
-			image:true,
+			imgurl:true,
 			numberOfPalyers: true,
 			bookings:true,
 			GameOffers:true
