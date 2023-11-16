@@ -22,6 +22,7 @@ export type ITurfResponse = {
 	name: string,
 	owner: string,
 	location: string,
+	image:string,
 	gameOffers?: gameOffer[],
 	fields?: fields[],
 	bookings?:bookings[]
